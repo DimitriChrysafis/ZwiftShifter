@@ -9,5 +9,6 @@ struct ZwiftShifterApp: App {
             ContentView(model: model)
         }
         .windowResizability(.contentSize)
+        .windowStyle(.hiddenTitleBar)
     }
 }
