@@ -8,41 +8,6 @@ This is an experimental interoperability tool for the current Apple Silicon Zwif
 
 ![Zwift Shifter](screenshot.png)
 
-## Quick start
-
-Requirements:
-
-- Apple Silicon
-- Xcode or Xcode command-line tools, including `xcrun lldb`
-- Zwift running with a supported Click v2 controller selected as `ZP User Input`
-- Zwift virtual shifting enabled by Zwift for the connected trainer
-
-Build and launch:
-
-```sh
-cd /Users/dofa/ZwiftShifter
-./build-app.sh
-open build/ZwiftShifter.app
-```
-
-The app has two controls:
-
-- `SHIFT LEFT` — one easier gear
-- `SHIFT RIGHT` — one harder gear
-- Left/right arrow shortcuts while the shifter window is focused
-
-The source-level investigation journal, including the unsuccessful approaches and exact debugging trail, is in [`AGENTS.md`](AGENTS.md).
-
-## What the app actually uses
-
-The app does not press the physical Click buttons. It does not connect to Bluetooth, read a GATT characteristic, install a virtual HID driver, or send a keyboard shortcut to Zwift.
-
-However, the current implementation is **not independent of all Click hardware**. Zwift gates its virtual-shifting feature on a supported controller being selected and connected as `ZP User Input`. The app reuses that existing Click v2 session identity and sends a synthetic controller notification through Zwift after the Bluetooth layer. If every Click is unplugged or unpaired, this build will report `Zwift Click session not found` or Zwift will not accept the event.
-
-The live setup was detected as a Click v2/BC2 controller with firmware 1.1.0 and an `FC82` controller service. It was not the legacy Click v1 `0x37` path.
-
-If “OG Click” means the original first-generation Click buttons, those buttons are not read or pressed by this app. If it means removing every physical Click device, that is not supported by this build.
-
 ## Why the first version lagged
 
 The first working implementation launched LLDB on every button press:
