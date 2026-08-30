@@ -4,11 +4,13 @@ A small native SwiftUI macOS app that provides left/right virtual shifting butto
 
 This is an experimental interoperability tool for the current Apple Silicon Zwift client. It was built and tested against a live Zwift session on 2026-08-27.
 
+![Zwift Shifter](screenshot.png)
+
 ## Quick start
 
 Requirements:
 
-- Apple Silicon Mac running macOS 14 or newer
+- Apple Silicon
 - Xcode or Xcode command-line tools, including `xcrun lldb`
 - Zwift running with a supported Click v2 controller selected as `ZP User Input`
 - Zwift virtual shifting enabled by Zwift for the connected trainer
