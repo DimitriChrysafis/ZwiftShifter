@@ -71,6 +71,40 @@ pairing refresh, the three existing configuration XMLs were backed up with hashe
 under `LocalEvidence/backups/power-repair-20261109-145750/`. All pairing changes
 used Zwift's UI; the installed binary and macOS security settings were preserved.
 
+## 2026-11-09 evening update
+
+Additional same-day findings, after the captures above:
+
+- Zwift logs showed the software device **was selected under Power Source** at
+  16:41:50, then the KICKR experienced a real BLE link timeout
+  (`CBErrorDomain 6`, link supervision timeout) at 16:44:31 and reconnected at
+  16:45:45. Zwift's instant reconnection is normal warm-link behavior, not a
+  fake connection.
+- A second bounded observer capture (~75 s, 46 Cycling Power notifications)
+  delivered byte-identical zero payloads with frozen wheel/crank counters.
+  Physical pedaling during that window was **not** confirmed; the zeros are
+  consistent with a stationary trainer.
+- Comparing the two captures, the KICKR's cumulative revolution counters did
+  change between 15:04 and ~16:42, so its measurement path has been alive.
+- The wrong-role pairing was manually corrected through Zwift's UI: KICKR for
+  Power Source, Resistance, Cadence, and Heart Rate; the software device under
+  Controls only. `prefs.xml` was verified to already record the KICKR as
+  `LASTPOWERDEVICE` etc., so the wrong Power assignment was live session state.
+- The software controller's advertised services were changed from Cycling Power
+  `1818` to Heart Rate `180d`. Verified live: the device lists under the Heart
+  Rate picker, pairing it there triggers TCP connect and grants component 23
+  (Controls), and a `zwiftshift up` produced `Shift 0-(10 -> 11)`. The device no
+  longer advertises a power service, although Zwift's Power picker still lists a
+  connected ZP device under RECOMMENDED — do not select it there.
+- The `ZwiftShift Input` name stayed classified as a power device in Zwift's
+  known-device cache (keyed by device name) even after the service swap, so the
+  controller identity was renamed to `ZwiftShift` (serial `100000004`, MAC
+  `02:5A:53:48:49:49`). With the production app: HR select → Controls pairing →
+  `Shift 0-(11 -> 12)` at 17:52:42, with the KICKR holding all four data roles.
+- A true pedaling interval is still outstanding. The remaining zero-watt
+  question is only whether the trainer emits nonzero values while the flywheel
+  turns.
+
 ## Next decisive checks
 
 1. Coordinate a fresh 15-second pedaling interval with the user and compare

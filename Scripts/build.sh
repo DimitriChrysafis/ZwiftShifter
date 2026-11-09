@@ -37,7 +37,6 @@ plutil -insert NSPrincipalClass -string NSApplication "$plist"
 plutil -insert NSHighResolutionCapable -bool true "$plist"
 plutil -insert NSLocalNetworkUsageDescription -string 'ZwiftShift advertises a software shifting controller for Zwift running on this Mac.' "$plist"
 plutil -insert NSBonjourServices -json '["_wahoo-fitness-tnp._tcp."]' "$plist"
-plutil -insert ZwiftShiftRuntimeDirectory -string "$project_root/build/runtime" "$plist"
 if [[ -f "$project_root/build/AppIcon.icns" ]]; then
   cp "$project_root/build/AppIcon.icns" "$app_dir/Contents/Resources/AppIcon.icns"
   plutil -insert CFBundleIconFile -string AppIcon "$plist"

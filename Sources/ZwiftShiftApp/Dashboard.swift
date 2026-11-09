@@ -286,7 +286,7 @@ private struct ConnectionDetails: View {
         )
         step(
           2,
-          "If it is missing, select it under Power Source briefly so Zwift discovers it, then select it under Controls."
+          "If it is missing, select it under Heart Rate once so Zwift discovers it, then check it under Controls."
         )
         step(
           3,

@@ -95,7 +95,7 @@ private func localAddresses() -> Set<String> {
       NetService.data(fromTXTRecord: [
         "mac-address": Data(settings.macAddress.utf8),
         "serial-number": Data(settings.serialNumber.utf8),
-        "ble-service-uuids": Data("fc82,1818,180a,180f".utf8),
+        "ble-service-uuids": Data("fc82,180d,180a,180f".utf8),
       ]))
     advertisement = service
     service.publish(options: .noAutoRename)

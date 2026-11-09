@@ -114,7 +114,7 @@ public enum ZwiftWire {
   public static let serviceType = "_wahoo-fitness-tnp._tcp."
   public static let services: [(Data, [(Data, UInt8)])] = [
     (service, [(async, 4), (rx, 2), (tx, 4)]),
-    (uuid("1818"), [(uuid("2a63"), 4), (uuid("2a65"), 1), (uuid("2a5d"), 1)]),
+    (uuid("180d"), [(uuid("2a37"), 4), (uuid("2a38"), 1)]),
     (uuid("180a"), ["2a29", "2a24", "2a25", "2a26", "2a27"].map { (uuid($0), 1) }),
     (uuid("180f"), [(uuid("2a19"), 5)]),
   ]

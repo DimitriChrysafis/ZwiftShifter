@@ -76,8 +76,9 @@ public struct GearTracker {
 }
 
 /// Read-only, bounded, rotation-aware tail of Zwift's own log.
-@MainActor public final class GearTelemetry {
-  nonisolated public static let defaultURL = FileManager.default.homeDirectoryForCurrentUser
+/// Serial access by contract: one caller queue at a time.
+public final class GearTelemetry: @unchecked Sendable {
+  public static let defaultURL = FileManager.default.homeDirectoryForCurrentUser
     .appendingPathComponent("Documents/Zwift/Logs/Log.txt")
   private let url: URL
   private var handle: FileHandle?
@@ -97,10 +98,12 @@ public struct GearTracker {
     tracker = GearTracker()
   }
   public func poll() throws {
-    guard FileManager.default.fileExists(atPath: url.path) else { return }
-    let attrs = try FileManager.default.attributesOfItem(atPath: url.path)
-    let size = (attrs[.size] as? NSNumber)?.uint64Value ?? 0
-    let newInode = (attrs[.systemFileNumber] as? NSNumber)?.uint64Value
+    var st = Darwin.stat()
+    guard url.withUnsafeFileSystemRepresentation({ Darwin.lstat($0, &st) }) == 0 else {
+      return
+    }
+    let size = UInt64(st.st_size)
+    let newInode = st.st_ino
     let historical = handle == nil || inode != newInode || size < offset
     if historical {
       reset()

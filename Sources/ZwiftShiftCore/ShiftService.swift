@@ -19,6 +19,9 @@ import Foundation
   private var batchUnexpected = false
   private var stopped = false
   private var telemetryError: String?
+  private let telemetryQueue = DispatchQueue(label: "zwiftshift.telemetry")
+  private var telemetryInFlight = false
+  private var latestGear: ObservedGear?
   public init(paths: RuntimePaths = .current, logURL: URL = GearTelemetry.defaultURL) throws {
     self.paths = paths
     let settings = try paths.loadSettings()
@@ -35,9 +38,15 @@ import Foundation
       self.publish()
     }
     telemetry.onEvent = { [weak self] event, historical in
-      self?.observe(event, historical: historical)
+      DispatchQueue.main.async {
+        MainActor.assumeIsolated { self?.observe(event, historical: historical) }
+      }
     }
-    telemetry.onLine = { [weak self] line, _ in self?.observeLine(line) }
+    telemetry.onLine = { [weak self] line, _ in
+      DispatchQueue.main.async {
+        MainActor.assumeIsolated { self?.observeLine(line) }
+      }
+    }
     rpc.handler = { [weak self] request, completion in
       guard let self else {
         completion(RPCResponse(ok: false, message: "Service stopped."))
@@ -88,7 +97,8 @@ import Foundation
     timer = nil
     backend.stop()
     rpc.stop()
-    telemetry.reset()
+    let telemetry = self.telemetry
+    telemetryQueue.async { telemetry.reset() }
     status.gear = nil
     log("info", "Service stopped; all buttons released.")
   }
@@ -99,7 +109,9 @@ import Foundation
     let pid = app?.processIdentifier
     if pid != activePID {
       activePID = pid
-      telemetry.reset()
+      let telemetry = self.telemetry
+      telemetryQueue.async { telemetry.reset() }
+      latestGear = nil
       status.gear = nil
       status.paired = false
       status.virtualShiftingEnabled = false
@@ -112,15 +124,36 @@ import Foundation
         log("info", "Zwift detected (PID \(pid!)).")
       }
     }
-    if pid != nil {
-      do {
-        try telemetry.poll()
-        telemetryError = nil
-        status.gear = telemetry.tracker.gear
-      } catch {
-        if telemetryError != error.localizedDescription {
-          telemetryError = error.localizedDescription
-          log("warning", "Cannot read Zwift gear feedback: \(error.localizedDescription)")
+    if pid != nil, !telemetryInFlight {
+      telemetryInFlight = true
+      let telemetry = self.telemetry
+      telemetryQueue.async { [weak self] in
+        do {
+          try telemetry.poll()
+          let gear = telemetry.tracker.gear
+          DispatchQueue.main.async {
+            MainActor.assumeIsolated {
+              guard let self else { return }
+              self.telemetryInFlight = false
+              self.telemetryError = nil
+              self.latestGear = gear
+              self.status.gear = gear
+              self.publish()
+            }
+          }
+        } catch {
+          DispatchQueue.main.async {
+            MainActor.assumeIsolated {
+              guard let self else { return }
+              self.telemetryInFlight = false
+              if self.telemetryError != error.localizedDescription {
+                self.telemetryError = error.localizedDescription
+                self.log(
+                  "warning",
+                  "Cannot read Zwift gear feedback: \(error.localizedDescription)")
+              }
+            }
+          }
         }
       }
     }
@@ -132,7 +165,7 @@ import Foundation
     if wasPaired && !status.paired { cancelShifting() }
   }
   private func observe(_ event: GearEvent, historical: Bool) {
-    status.gear = telemetry.tracker.gear
+    status.gear = latestGear
     guard !historical else { return }
     let from: Int
     let to: Int

@@ -114,6 +114,8 @@ public struct ServiceStatus: Codable, Sendable {
       if line.contains("Device selected for role") { paired = true }
       if line.contains("Device unselected for role") { paired = false }
     }
+    if line.contains("Unpair \"\(settings.deviceName)\"") { paired = false }
+    if line.contains("Non-Selected: \(settings.deviceName) (") { paired = false }
     if line.contains("Device selected for role"), line.contains(", role: Power)") {
       controllerAsPowerSource = line.contains(controller + "Power)")
     }
@@ -165,18 +167,6 @@ public struct RuntimePaths: Sendable {
     {
       return RuntimePaths(directory: URL(fileURLWithPath: custom))
     }
-    var candidate = (Bundle.main.executableURL ?? URL(fileURLWithPath: CommandLine.arguments[0]))
-      .resolvingSymlinksInPath().deletingLastPathComponent()
-    for _ in 0..<9 {
-      if FileManager.default.fileExists(
-        atPath: candidate.appendingPathComponent("Package.swift").path),
-        FileManager.default.fileExists(
-          atPath: candidate.appendingPathComponent("Sources/ZwiftShiftCore").path)
-      {
-        return RuntimePaths(directory: candidate.appendingPathComponent("build/runtime"))
-      }
-      candidate.deleteLastPathComponent()
-    }
     return RuntimePaths(
       directory: FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
         "Library/Application Support/ZwiftShift"))
@@ -185,7 +175,11 @@ public struct RuntimePaths: Sendable {
     try FileManager.default.createDirectory(
       at: directory, withIntermediateDirectories: true,
       attributes: [.posixPermissions: 0o700])
-    try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: directory.path)
+    let attrs = try FileManager.default.attributesOfItem(atPath: directory.path)
+    if (attrs[.posixPermissions] as? NSNumber)?.intValue != 0o700 {
+      try FileManager.default.setAttributes(
+        [.posixPermissions: 0o700], ofItemAtPath: directory.path)
+    }
   }
   public func loadSettings() throws -> Settings {
     guard FileManager.default.fileExists(atPath: settings.path) else { return Settings() }
