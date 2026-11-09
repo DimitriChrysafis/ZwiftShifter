@@ -30,6 +30,13 @@ test utility, not the app's Carbon hotkeys. `direct-click` is an exploratory
 PID-directed route that did not activate SwiftUI buttons; it is not used by
 acceptance tests.
 
+`activate PID` sets and verifies foreground state through Accessibility.
+`element PID IDENTIFIER` returns a native control's screen bounds and enabled
+state; `press-element` invokes its accessible press action. A `label:NAME` query
+matches a native label/title for ordinary menu and sheet controls. Live mouse
+tests activate the app before resolving `shift-up` / `shift-down`, so moving the
+window does not require editing test coordinates.
+
 `trace_delivery.py` observes a single explicit click through Cocoa/GLFW and
 detaches in `finally`. Its fixed screen coordinates are historical research
 coordinates, not a general-purpose pairing automation.

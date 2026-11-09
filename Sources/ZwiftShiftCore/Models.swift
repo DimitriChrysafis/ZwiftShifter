@@ -92,6 +92,7 @@ public struct ServiceStatus: Codable, Sendable {
   public var zwiftRunning = false
   public var paired = false
   public var virtualShiftingEnabled = false
+  public var controllerAsPowerSource = false
   public var connectedClients = 0
   public var backend = "Local network · DirCon / Zwift Protocol"
   public var gear: ObservedGear?
@@ -105,6 +106,22 @@ public struct ServiceStatus: Codable, Sendable {
     zwiftRunning && paired && connectedClients > 0 && state == "connected"
   }
   public init(settings: Settings) { self.settings = settings }
+
+  mutating func observeConnectionLine(_ line: String) {
+    let controller = "device: \(settings.deviceName), role: "
+    if line.contains(controller + "ZP User Input)") {
+      if line.contains("Device selected for role") { paired = true }
+      if line.contains("Device unselected for role") { paired = false }
+    }
+    if line.contains("Device selected for role"), line.contains(", role: Power)") {
+      controllerAsPowerSource = line.contains(controller + "Power)")
+    }
+    if line.contains("Device unselected for role"), line.contains(controller + "Power)") {
+      controllerAsPowerSource = false
+    }
+    if line.contains("Enabled virtual shifting on") { virtualShiftingEnabled = true }
+    if line.contains("Disabled virtual shifting on") { virtualShiftingEnabled = false }
+  }
 }
 
 public struct RPCRequest: Codable, Sendable {

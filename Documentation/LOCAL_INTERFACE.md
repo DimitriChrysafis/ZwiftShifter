@@ -31,6 +31,11 @@ processing is bounded by 100 shifts at a maximum two-second interval plus a
 {"command":"settings","settings":{...complete settings object...}}
 ```
 
+The status field `controllerAsPowerSource` reports whether Zwift selected this
+software controller for Power Source. This is a pairing mistake once discovery
+is complete; select the real trainer for power and resistance. It is independent
+of controller connectivity and `virtualShiftingEnabled`.
+
 Controls/repeat settings may change while running; an active hold is cancelled
 when settings change. Device identity and listening port require a service restart
 and cannot be changed through the live settings command.

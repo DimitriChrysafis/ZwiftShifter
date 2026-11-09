@@ -67,6 +67,11 @@ import ZwiftShiftCore
         print(
           "Trainer virtual shifting: \(status.virtualShiftingEnabled ? "enabled in Zwift" : "not reported active")"
         )
+        if status.controllerAsPowerSource {
+          print(
+            "Power source: ZwiftShift selected · select your trainer; keep ZwiftShift under Controls"
+          )
+        }
         print("Backend: \(status.backend)")
         print(
           "Repeat: \(status.settings.repeatMilliseconds) ms · shortcuts \(status.settings.upShortcut.label) / \(status.settings.downShortcut.label)"

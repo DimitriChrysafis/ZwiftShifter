@@ -13,6 +13,63 @@ The user later clarified that the KICKR was unavailable at the current location;
 subsequent campus tests explicitly verify software/game behavior only.
 **No test here measures trainer resistance under pedaling load.**
 
+## Home check with the actual KICKR
+
+At **12:49:25 CST**, Zwift connected to **KICKR CORE CED4**, firmware **3.5.24**,
+over Bluetooth. At **12:49:30**, its own log explicitly reports:
+
+```text
+[ZwiftProtocol] Enabled virtual shifting on KICKR CORE CED4.
+```
+
+The Power Source picker initially retained the software bootstrap device. The
+KICKR appeared under the picker's **All** filter and was selected for Power Source
+at **12:50:58**. Power, Resistance, and Cadence are now the actual KICKR; Controls
+is ZwiftShift Input. Saved preferences were checked after selection. Configuration
+was backed up before this session, and all pairing changes used Zwift's UI.
+
+![Actual KICKR and software Controls pairing](../Screenshots/kickr-pairing.png)
+
+The final stationary test at **12:56:46–12:57:24** passed **all 12 cases**:
+
+- CLI up/down: **10 → 11 → 10**.
+- CLI five-step batches: **10 → 15 → 10**.
+- Mouse taps: **10 → 11 → 10**; 1.35-second holds: **10 → 14 → 10**.
+- Global shortcut taps: **10 → 11 → 10**; holds: **10 → 14 → 10**.
+
+The user's **400 ms** repeat interval was retained. Each case checked fresh game
+log changes, stability after release, and an idle service. `--require-trainer`
+additionally required Zwift's virtual-shifting-enabled state and the correct
+Power Source assignment before and after every case.
+
+![Home baseline gear 10](../Screenshots/home-hud-before-10.png)
+![Home upshift gear 11](../Screenshots/home-hud-up-11.png)
+![Home downshift gear 10](../Screenshots/home-hud-down-10.png)
+
+Reviewed records: [all 12 cases](Evidence/kickr-home-live.json),
+[environment and test scope](Evidence/kickr-home-environment.json), and
+[device connection log](Evidence/kickr-home-device-log.txt). HUD evidence is cropped
+from actual game captures, with zero watts visible. The user explicitly confirmed
+they were not on the bike; resistance under load remains a future ride check.
+
+An earlier run passed the four CLI cases but missed its first automated mouse
+click while the target window lacked focus. It was recorded as a failure.
+The helper now confirms foreground state before resolving each button's
+accessibility bounds. The complete rerun passed without counting retries.
+
+The new UI was also checked through the native accessibility tree and rendered
+captures: Command–comma opens Settings; Cancel and Save work; Activity shows live
+events behind its menu entry. Source status parsing has two regression tests for
+the distinction between Power Source bootstrap, Controls pairing, and trainer
+virtual shifting.
+
+At **13:00:59**, the native app was quit and reopened normally while Zwift and
+the KICKR stayed running. It reconnected in **4.6 seconds**. Zwift logged trainer
+virtual shifting being disabled during the disconnect and enabled again after
+the controller rejoined. Fresh CLI shifts then produced **10 → 11 → 10**.
+The 400 ms interval and all settings survived. See the
+[restart record](Evidence/kickr-home-reconnect.json).
+
 ## First decisive HUD sequence
 
 | Action | Zwift's observed gear | Game-log time (CST) |
@@ -72,13 +129,15 @@ extra changes rather than suppressing them.
 
 ## Automated unit and local integration checks
 
-**18 tests passed**. They cover CLI validation; malformed/fragmented/coalesced
+**20 tests passed** after the minimal UI/status revision. They cover CLI validation; malformed/fragmented/coalesced
 DirCon frames; protobuf bounds; captured handshake/capability/battery/button
 fixtures; subscriptions and fresh reconnect state; no fabricated power; dynamic
 gear dimensions; shortcut/settings validation; real Unix RPC, exclusive ownership,
 permissions and restart; log split lines and rotation; minimum pulse timing,
 cancellation and transport-error release; real TCP handshake, notification
-delivery, malformed-session close, and successful reconnect.
+delivery, malformed-session close, and successful reconnect. Two additional
+cases verify Power Source bootstrap is distinct from trainer readiness and that
+unpairing power does not incorrectly unpair Controls.
 
 These tests are not claimed as live Zwift validation. TCP tests use ephemeral
 ports with Bonjour advertising disabled, so they do not add test devices to the
@@ -96,7 +155,9 @@ python3 Scripts/live_acceptance.py --live
 ```
 
 Use `--desktop-tests --screenshots` for bounded app clicks and shortcut holds.
-Keep the dashboard at its default size and close sheets. Do not use other
+Close settings and connection sheets. Buttons are located using their native
+accessibility identifiers. Use `--require-trainer` to fail unless Zwift reports
+trainer virtual shifting enabled throughout every case. Do not use other
 controls while exact-count checks run. Evidence goes under `build/live-*`; the
 script stops on failure with no blind retry. Screenshots are private by default.
 
@@ -116,7 +177,8 @@ script stops on failure with no blind retry. Screenshots are private by default.
 Configuration backup/restoration and the final installation state are recorded
 in the closing research entry. Original backups remain local and ignored.
 
-All original configuration files were first restored with matching hashes; final
+At the initial **11:45** installation, all original configuration files were
+first restored with matching hashes; final
 setup then retained only the verified software Controls selection and cache entry.
 The saved KICKR Power, Resistance, and Cadence selections match the original
 preferences. The installed game binary hash is unchanged. Zwift exited normally;

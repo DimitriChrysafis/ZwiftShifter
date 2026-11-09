@@ -1,0 +1,28 @@
+{
+  "time": "2026-11-09T12:56:45.613548-06:00",
+  "initial_gear": {
+    "front": 0,
+    "frontCount": 1,
+    "observedAt": "2026-11-09T18:56:28Z",
+    "rear": 10,
+    "rearCount": 24,
+    "source": "Zwift Log.txt"
+  },
+  "virtual_shifting_reported_by_zwift": true,
+  "software_controller_selected_for_power": false,
+  "repeat_ms": 400,
+  "require_trainer": true,
+  "scope": "Actual game gear transitions; physical trainer resistance is not measured by this script.",
+  "trainer": "KICKR CORE CED4",
+  "trainer_firmware": "3.5.24",
+  "trainer_connection": "Bluetooth",
+  "zwift_version": "1.125.0 (168455)",
+  "user_pedaling": false,
+  "physical_resistance_under_load": "Not tested; user confirmed they were not on the bike.",
+  "pairing": {
+    "power": "KICKR CORE CED4",
+    "resistance": "KICKR CORE CED4",
+    "cadence": "KICKR CORE CED4",
+    "controls": "ZwiftShift Input"
+  }
+}

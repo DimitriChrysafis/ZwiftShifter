@@ -1,10 +1,27 @@
-Test Suite 'All tests' started at 2026-11-09 11:36:44.878.
-Test Suite 'ZwiftShiftCoreTests.xctest' started at 2026-11-09 11:36:44.881.
-Test Suite 'CoreTests' started at 2026-11-09 11:36:44.881.
+Building for debugging...
+[Pre-planning 1 / 153]
+[Planning deferred tasks]
+[5 / 24]
+[6 / 25] ZwiftShiftCore
+[9 / 28] ZwiftShiftCore
+[14 / 27] ZwiftShiftApp-product
+[18 / 31] ZwiftShiftApp-product
+[18 / 31] ZwiftShiftCore
+[24 / 34] zwiftshift-product
+[28 / 38] zwiftshift-product
+[28 / 38] ZwiftShiftCoreTests-product
+[36 / 42] ZwiftShiftCoreTests-product
+[38 / 42] zwiftshift-product
+[38 / 42] ZwiftShiftCoreTests-product
+[42 / 44] ZwiftShiftApp-product
+Build complete! (4.63 sec)
+Test Suite 'All tests' started at 2026-11-09 12:01:53.991.
+Test Suite 'ZwiftShiftCoreTests.xctest' started at 2026-11-09 12:01:53.994.
+Test Suite 'CoreTests' started at 2026-11-09 12:01:53.994.
 Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedButtonTransitions]' started.
-Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedButtonTransitions]' passed (0.002 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedButtonTransitions]' passed (0.003 seconds).
 Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedHandshakeAndCapabilities]' started.
-Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedHandshakeAndCapabilities]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedHandshakeAndCapabilities]' passed (0.001 seconds).
 Test Case '-[ZwiftShiftCoreTests.CoreTests testCLIValidation]' started.
 Test Case '-[ZwiftShiftCoreTests.CoreTests testCLIValidation]' passed (0.000 seconds).
 Test Case '-[ZwiftShiftCoreTests.CoreTests testFragmentedAndCoalescedFrames]' started.
@@ -13,45 +30,49 @@ Test Case '-[ZwiftShiftCoreTests.CoreTests testFrameBounds]' started.
 Test Case '-[ZwiftShiftCoreTests.CoreTests testFrameBounds]' passed (0.000 seconds).
 Test Case '-[ZwiftShiftCoreTests.CoreTests testObservedGearAndDynamicDimensions]' started.
 Test Case '-[ZwiftShiftCoreTests.CoreTests testObservedGearAndDynamicDimensions]' passed (0.002 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testPowerBootstrapDoesNotImplyTrainerReadiness]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testPowerBootstrapDoesNotImplyTrainerReadiness]' passed (0.001 seconds).
 Test Case '-[ZwiftShiftCoreTests.CoreTests testProtobufRejectsTruncationAndOverflow]' started.
 Test Case '-[ZwiftShiftCoreTests.CoreTests testProtobufRejectsTruncationAndOverflow]' passed (0.000 seconds).
 Test Case '-[ZwiftShiftCoreTests.CoreTests testSessionRequiresSubscriptionsAndHandshake]' started.
-Test Case '-[ZwiftShiftCoreTests.CoreTests testSessionRequiresSubscriptionsAndHandshake]' passed (0.001 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testSessionRequiresSubscriptionsAndHandshake]' passed (0.000 seconds).
 Test Case '-[ZwiftShiftCoreTests.CoreTests testSettingsBoundsAndShortcutConflicts]' started.
-Test Case '-[ZwiftShiftCoreTests.CoreTests testSettingsBoundsAndShortcutConflicts]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testSettingsBoundsAndShortcutConflicts]' passed (0.001 seconds).
 Test Case '-[ZwiftShiftCoreTests.CoreTests testUnknownCharacteristicsAreRejectedAndNoPowerIsFabricated]' started.
 Test Case '-[ZwiftShiftCoreTests.CoreTests testUnknownCharacteristicsAreRejectedAndNoPowerIsFabricated]' passed (0.000 seconds).
-Test Suite 'CoreTests' passed at 2026-11-09 11:36:44.888.
-	 Executed 10 tests, with 0 failures (0 unexpected) in 0.006 (0.007) seconds
-Test Suite 'LocalIntegrationTests' started at 2026-11-09 11:36:44.888.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testUnpairingPowerAndControlsAreIndependent]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testUnpairingPowerAndControlsAreIndependent]' passed (0.000 seconds).
+Test Suite 'CoreTests' passed at 2026-11-09 12:01:54.004.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.008 (0.010) seconds
+Test Suite 'LocalIntegrationTests' started at 2026-11-09 12:01:54.004.
 Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testRealUnixRPCRoundTripAndExclusiveOwnership]' started.
 Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testRealUnixRPCRoundTripAndExclusiveOwnership]' passed (0.003 seconds).
 Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testRefusesToReplaceUnexpectedFile]' started.
 Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testRefusesToReplaceUnexpectedFile]' passed (0.001 seconds).
 Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testTailHandlesPartialLinesAndRotation]' started.
 Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testTailHandlesPartialLinesAndRotation]' passed (0.002 seconds).
-Test Suite 'LocalIntegrationTests' passed at 2026-11-09 11:36:44.893.
-	 Executed 3 tests, with 0 failures (0 unexpected) in 0.005 (0.006) seconds
-Test Suite 'NetworkIntegrationTests' started at 2026-11-09 11:36:44.893.
+Test Suite 'LocalIntegrationTests' passed at 2026-11-09 12:01:54.010.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.007 (0.007) seconds
+Test Suite 'NetworkIntegrationTests' started at 2026-11-09 12:01:54.010.
 Test Case '-[ZwiftShiftCoreTests.NetworkIntegrationTests testRealTCPHandshakeButtonDeliveryDisconnectAndReconnect]' started.
-Test Case '-[ZwiftShiftCoreTests.NetworkIntegrationTests testRealTCPHandshakeButtonDeliveryDisconnectAndReconnect]' passed (0.020 seconds).
-Test Suite 'NetworkIntegrationTests' passed at 2026-11-09 11:36:44.914.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.020 (0.021) seconds
-Test Suite 'PulseTests' started at 2026-11-09 11:36:44.914.
+Test Case '-[ZwiftShiftCoreTests.NetworkIntegrationTests testRealTCPHandshakeButtonDeliveryDisconnectAndReconnect]' passed (0.022 seconds).
+Test Suite 'NetworkIntegrationTests' passed at 2026-11-09 12:01:54.032.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.022 (0.022) seconds
+Test Suite 'PulseTests' started at 2026-11-09 12:01:54.032.
 Test Case '-[ZwiftShiftCoreTests.PulseTests testCancellationAlwaysReleasesButton]' started.
 Test Case '-[ZwiftShiftCoreTests.PulseTests testCancellationAlwaysReleasesButton]' passed (0.000 seconds).
 Test Case '-[ZwiftShiftCoreTests.PulseTests testMinimumPressAndRelease]' started.
 Test Case '-[ZwiftShiftCoreTests.PulseTests testMinimumPressAndRelease]' passed (0.000 seconds).
 Test Case '-[ZwiftShiftCoreTests.PulseTests testRealPulseDurationAndCancellation]' started.
-Test Case '-[ZwiftShiftCoreTests.PulseTests testRealPulseDurationAndCancellation]' passed (0.146 seconds).
+Test Case '-[ZwiftShiftCoreTests.PulseTests testRealPulseDurationAndCancellation]' passed (0.145 seconds).
 Test Case '-[ZwiftShiftCoreTests.PulseTests testTransportFailureStillAttemptsRelease]' started.
 Test Case '-[ZwiftShiftCoreTests.PulseTests testTransportFailureStillAttemptsRelease]' passed (0.000 seconds).
-Test Suite 'PulseTests' passed at 2026-11-09 11:36:45.061.
+Test Suite 'PulseTests' passed at 2026-11-09 12:01:54.179.
 	 Executed 4 tests, with 0 failures (0 unexpected) in 0.146 (0.147) seconds
-Test Suite 'ZwiftShiftCoreTests.xctest' passed at 2026-11-09 11:36:45.061.
-	 Executed 18 tests, with 0 failures (0 unexpected) in 0.178 (0.180) seconds
-Test Suite 'All tests' passed at 2026-11-09 11:36:45.061.
-	 Executed 18 tests, with 0 failures (0 unexpected) in 0.178 (0.182) seconds
+Test Suite 'ZwiftShiftCoreTests.xctest' passed at 2026-11-09 12:01:54.179.
+	 Executed 20 tests, with 0 failures (0 unexpected) in 0.183 (0.185) seconds
+Test Suite 'All tests' passed at 2026-11-09 12:01:54.179.
+	 Executed 20 tests, with 0 failures (0 unexpected) in 0.183 (0.188) seconds
 ◇ Test run started.
 ↳ Testing Library Version: 2403
 ↳ Target Platform: arm64e-apple-macos14.0

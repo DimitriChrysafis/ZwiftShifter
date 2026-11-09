@@ -122,6 +122,48 @@ final class CoreTests: XCTestCase {
     settings.downShortcut = settings.upShortcut
     XCTAssertThrowsError(try settings.validate())
   }
+
+  func testPowerBootstrapDoesNotImplyTrainerReadiness() {
+    var settings = Settings()
+    settings.deviceName = "ZwiftShift Input"
+    var status = ServiceStatus(settings: settings)
+    status.zwiftRunning = true
+    status.state = "connected"
+    status.connectedClients = 1
+    status.observeConnectionLine(
+      "[BLE] Device selected for role (device: ZwiftShift Input, role: Power)")
+    status.observeConnectionLine(
+      "[BLE] Device selected for role (device: ZwiftShift Input, role: ZP User Input)")
+    XCTAssertTrue(status.canShift, "Controller input can connect without a trainer")
+    XCTAssertTrue(status.controllerAsPowerSource)
+    XCTAssertFalse(
+      status.virtualShiftingEnabled, "Receiving controls does not enable trainer shifting")
+    status.observeConnectionLine("[BLE] Device selected for role (device: KICKR CORE, role: Power)")
+    XCTAssertFalse(status.controllerAsPowerSource)
+    status.observeConnectionLine("[Connectivity] Enabled virtual shifting on KICKR CORE")
+    XCTAssertTrue(status.virtualShiftingEnabled)
+    status.observeConnectionLine("[Connectivity] Disabled virtual shifting on KICKR CORE")
+    XCTAssertFalse(status.virtualShiftingEnabled)
+  }
+
+  func testUnpairingPowerAndControlsAreIndependent() {
+    var settings = Settings()
+    settings.deviceName = "ZwiftShift Input"
+    var status = ServiceStatus(settings: settings)
+    status.observeConnectionLine("Device selected for role (device: ZwiftShift Input, role: Power)")
+    status.observeConnectionLine(
+      "Device selected for role (device: ZwiftShift Input, role: ZP User Input)")
+    status.observeConnectionLine(
+      "Device unselected for role (device: ZwiftShift Input, role: Power)")
+    XCTAssertFalse(status.controllerAsPowerSource)
+    XCTAssertTrue(status.paired)
+    status.observeConnectionLine(
+      "Device unselected for role (device: Other Controller, role: ZP User Input)")
+    XCTAssertTrue(status.paired)
+    status.observeConnectionLine(
+      "Device unselected for role (device: ZwiftShift Input, role: ZP User Input)")
+    XCTAssertFalse(status.paired)
+  }
 }
 
 @MainActor final class LocalIntegrationTests: XCTestCase {

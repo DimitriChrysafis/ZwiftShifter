@@ -1,0 +1,12 @@
+[12:49:23] INFO LEVEL: [BLE] Device selected for role (device: KICKR CORE CED4, role: Cadence)
+[12:49:23] INFO LEVEL: [BLE] Device selected for role (device: KICKR CORE CED4, role: Controllable Trainer)
+[12:49:23] [ZwiftProtocol] Disabled virtual shifting on KICKR CORE CED4.
+[12:49:25] INFO LEVEL: [BLE] Device selected for role (device: KICKR CORE CED4, role: HR)
+[12:49:30] INFO LEVEL: [BLE] Device selected for role (device: ZwiftShift Input, role: Power)
+[12:49:30] INFO LEVEL: [BLE] Device selected for role (device: ZwiftShift Input, role: ZP User Input)
+[12:49:30] INFO LEVEL: [BLE] Device selected for role (device: ZwiftShift Input, role: ZP User Input)
+[12:49:30] [ZwiftProtocol] Enabled virtual shifting on KICKR CORE CED4.
+[12:49:30] [BLE] "KICKR CORE CED4" firmware version: 3.5.24
+[12:49:30] INFO LEVEL: [BLE] Device selected for role (device: ZwiftShift Input, role: ZP User Input)
+[12:49:31] INFO LEVEL: [ZwiftProtocol] Comms established with KICKR CORE CED4.
+[12:50:58] INFO LEVEL: [BLE] Device selected for role (device: KICKR CORE CED4, role: Power)

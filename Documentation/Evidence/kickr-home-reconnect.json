@@ -1,0 +1,33 @@
+{
+  "time": "2026-11-09T13:01:04.801023-06:00",
+  "passed": true,
+  "reconnected_in_seconds": 4.6,
+  "starting_gear": 10,
+  "final_gear": 10,
+  "repeat_ms": 400,
+  "settings_preserved": true,
+  "trainer_virtual_shifting_enabled": true,
+  "software_controller_as_power_source": false,
+  "shifts": [
+    {
+      "direction": "up",
+      "confirmed": true,
+      "gear": 11,
+      "trainer_virtual_shifting_enabled": true
+    },
+    {
+      "direction": "down",
+      "confirmed": true,
+      "gear": 10,
+      "trainer_virtual_shifting_enabled": true
+    }
+  ],
+  "game_log": [
+    "[13:00:59] [ZwiftProtocol] Disabled virtual shifting on KICKR CORE CED4.",
+    "[13:01:03] INFO LEVEL: [BLE] Device selected for role (device: ZwiftShift Input, role: ZP User Input)",
+    "[13:01:03] INFO LEVEL: [BLE] Device selected for role (device: ZwiftShift Input, role: ZP User Input)",
+    "[13:01:03] [ZwiftProtocol] Enabled virtual shifting on KICKR CORE CED4.",
+    "[13:01:04] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 11)",
+    "[13:01:04] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 10)"
+  ]
+}

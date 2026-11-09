@@ -8,6 +8,16 @@ let args = Array(CommandLine.arguments.dropFirst())
 switch args.first {
 case "permissions":
     print("accessibility=\(AXIsProcessTrusted()) postEvents=\(CGPreflightPostEventAccess()) screenCapture=\(CGPreflightScreenCaptureAccess())")
+case "activate":
+    guard args.count == 2, let pid = Int32(args[1]), AXIsProcessTrusted() else { exit(2) }
+    let app = AXUIElementCreateApplication(pid)
+    guard AXUIElementSetAttributeValue(app, kAXFrontmostAttribute as CFString, kCFBooleanTrue) == .success else { exit(3) }
+    let deadline = Date(timeIntervalSinceNow: 2)
+    while NSWorkspace.shared.frontmostApplication?.processIdentifier != pid && Date() < deadline {
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.02))
+    }
+    guard NSWorkspace.shared.frontmostApplication?.processIdentifier == pid else { exit(4) }
+    print("active=\(pid)")
 case "watch-chords", "watch-mouse":
     let mouse = args.first == "watch-mouse"
     let mask = mouse ? ((1 << CGEventType.leftMouseDown.rawValue) | (1 << CGEventType.leftMouseUp.rawValue))
@@ -36,6 +46,50 @@ case "windows":
         let data = try JSONSerialization.data(withJSONObject: w, options: [.sortedKeys])
         print(String(decoding: data, as: UTF8.self))
     }
+case "element", "press-element":
+    guard args.count == 3, let pid = Int32(args[1]) else { exit(2) }
+    guard AXIsProcessTrusted() else { fputs("Accessibility access is required for element lookup\n", stderr); exit(3) }
+    let app = AXUIElementCreateApplication(pid)
+    AXUIElementSetMessagingTimeout(app, 1)
+    func attribute(_ element: AXUIElement, _ name: CFString) -> CFTypeRef? {
+        var result: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(element, name, &result) == .success else { return nil }
+        return result
+    }
+    var pending: [(AXUIElement, Int)] = [(app, 0)]
+    var cursor = 0
+    while cursor < pending.count && cursor < 1500 {
+        let (element, depth) = pending[cursor]
+        cursor += 1
+        let identifier = attribute(element, kAXIdentifierAttribute as CFString) as? String
+        let label = attribute(element, kAXDescriptionAttribute as CFString) as? String
+        let title = attribute(element, kAXTitleAttribute as CFString) as? String
+        let labelQuery = args[2].hasPrefix("label:") ? String(args[2].dropFirst(6)) : nil
+        if identifier == args[2] || (labelQuery != nil && (label == labelQuery || title == labelQuery)) {
+            if args.first == "press-element" {
+                guard AXUIElementPerformAction(element, kAXPressAction as CFString) == .success else { exit(5) }
+                print("pressed")
+                exit(0)
+            }
+            guard let position = attribute(element, kAXPositionAttribute as CFString),
+                  let size = attribute(element, kAXSizeAttribute as CFString),
+                  CFGetTypeID(position) == AXValueGetTypeID(), CFGetTypeID(size) == AXValueGetTypeID() else { exit(5) }
+            var point = CGPoint.zero
+            var dimensions = CGSize.zero
+            guard AXValueGetValue(position as! AXValue, .cgPoint, &point),
+                  AXValueGetValue(size as! AXValue, .cgSize, &dimensions) else { exit(5) }
+            let result: [String: Any] = ["identifier": args[2], "x": point.x, "y": point.y,
+                                         "width": dimensions.width, "height": dimensions.height,
+                                         "enabled": attribute(element, kAXEnabledAttribute as CFString) as? Bool ?? false]
+            print(String(decoding: try JSONSerialization.data(withJSONObject: result, options: .sortedKeys), as: UTF8.self))
+            exit(0)
+        }
+        if depth < 20, let children = attribute(element, kAXChildrenAttribute as CFString) as? [AXUIElement] {
+            pending += children.map { ($0, depth + 1) }
+        }
+    }
+    fputs("Accessibility element not found: \(args[2])\n", stderr)
+    exit(4)
 case "click", "click-app", "direct-click":
     let direct = args.first == "direct-click"
     let specific = args.first != "click"
@@ -102,6 +156,6 @@ case "chord":
     modifier(59, false, [])
     RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.4))
 default:
-    fputs("desktop_probe permissions | windows [owner] | click x y | click-app pid x y holdMS | key pid keycode | chord keycode holdMS\n", stderr)
+    fputs("desktop_probe permissions | activate pid | windows [owner] | element pid identifier | press-element pid identifier | click x y | click-app pid x y holdMS | key pid keycode | chord keycode holdMS\n", stderr)
     exit(2)
 }

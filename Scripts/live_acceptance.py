@@ -24,6 +24,7 @@ def main():
     parser.add_argument("--desktop-tests", action="store_true", help="also click app buttons and exercise default shortcuts")
     parser.add_argument("--shortcut-tests", action="store_true", help="exercise default shortcuts without moving the mouse")
     parser.add_argument("--screenshots", action="store_true", help="save only Zwift and ZwiftShift windows in the evidence folder")
+    parser.add_argument("--require-trainer", action="store_true", help="fail unless Zwift reports trainer virtual shifting enabled throughout the test")
     parser.add_argument("--output", type=pathlib.Path)
     args = parser.parse_args()
     if not args.live:
@@ -72,10 +73,18 @@ def main():
             and stable["gear"]["rear"] == after["gear"]["rear"]
             and not stable["busy"]
         )
+        trainer_ready = all(
+            state["virtualShiftingEnabled"] and not state.get("controllerAsPowerSource", False)
+            for state in (before, after, stable)
+        )
+        if args.require_trainer:
+            passed = passed and trainer_ready
         row = {"test": name, "time": started, "passed": passed, "expected_changes": expected,
                "before": before["gear"]["rear"], "after": after["gear"]["rear"],
                "stable_after_release": stable["gear"]["rear"], "game_log": lines,
-               "hold_ms": hold_ms, "command_exit": result.returncode}
+               "hold_ms": hold_ms, "command_exit": result.returncode,
+               "command_output": result.stdout.strip(), "command_error": result.stderr.strip(),
+               "trainer_virtual_shifting_enabled": trainer_ready}
         rows.append(row)
         (output / "results.json").write_text(json.dumps(rows, indent=2) + "\n")
         print(f'{"PASS" if passed else "FAIL"} {name}: {row["before"]} → {row["after"]}; {len(changes)} game-log changes', flush=True)
@@ -86,13 +95,19 @@ def main():
     initial = status()
     if initial["state"] != "connected" or not initial["paired"] or not initial.get("gear"):
         raise RuntimeError("Pair the controller and enter a free ride before running this check.")
+    if args.require_trainer and (
+        not initial["virtualShiftingEnabled"] or initial.get("controllerAsPowerSource", False)
+    ):
+        raise RuntimeError("Pair the actual trainer for Power Source and Resistance, leave ZwiftShift under Controls, and enable virtual shifting.")
     gear = initial["gear"]
     if gear.get("frontCount") != 1 or gear["rear"] <= 5 or gear.get("rearCount", 0) - gear["rear"] < 5:
         raise RuntimeError("Choose a single-chainring gear at least five steps from both ends for this symmetric test.")
     (output / "environment.json").write_text(json.dumps({
         "time": dt.datetime.now().astimezone().isoformat(), "initial_gear": gear,
         "virtual_shifting_reported_by_zwift": initial["virtualShiftingEnabled"],
+        "software_controller_selected_for_power": initial.get("controllerAsPowerSource", False),
         "repeat_ms": initial["settings"]["repeatMilliseconds"],
+        "require_trainer": args.require_trainer,
         "scope": "Actual game gear transitions; physical trainer resistance is not measured by this script."
     }, indent=2) + "\n")
     if args.desktop_tests or args.shortcut_tests or args.screenshots:
@@ -117,14 +132,21 @@ def main():
             app = next((w for w in windows() if w["kCGWindowOwnerName"] == "ZwiftShift"), None)
             if app is None:
                 raise RuntimeError("Open the ZwiftShift dashboard for mouse tests; close its settings sheet.")
-            bounds = app["kCGWindowBounds"]
-            if bounds["Width"] != 880 or bounds["Height"] != 710:
-                raise RuntimeError("Desktop acceptance expects the default 880 × 710 dashboard window.")
             for held in (False, True):
-                for direction, dx in [("up", 648), ("down", 231)]:
+                for direction in ("up", "down"):
+                    # Activation can move a window between displays/spaces. Resolve
+                    # the accessible button only after foreground state is confirmed.
+                    subprocess.run([helper, "activate", str(app["kCGWindowOwnerPID"])],
+                                   check=True, capture_output=True, text=True, timeout=5)
+                    button = json.loads(subprocess.check_output(
+                        [helper, "element", str(app["kCGWindowOwnerPID"]), f"shift-{direction}"],
+                        text=True, timeout=8))
+                    if not button["enabled"] or button["width"] <= 0 or button["height"] <= 0:
+                        raise RuntimeError(f"The {direction} button is unavailable; close sheets and check pairing.")
                     ms = hold_ms if held else 80
                     command = [str(helper), "click-app", str(app["kCGWindowOwnerPID"]),
-                               str(bounds["X"] + dx), str(bounds["Y"] + 428), str(ms)]
+                               str(button["x"] + button["width"] / 2),
+                               str(button["y"] + button["height"] / 2), str(ms)]
                     run_case(f'mouse-{"hold" if held else "tap"}-{direction}', direction, 4 if held else 1, command, ms)
         for held in (False, True):
             for direction, key in [("up", 126), ("down", 125)]:

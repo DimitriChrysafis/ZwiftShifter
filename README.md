@@ -6,9 +6,10 @@ a global shortcut, or run `zwiftshift up`. No physical Zwift Click is required.
 **Actual game integration is verified on Zwift 1.125.0 (168455), Apple silicon,
 macOS 27.2.** The first live test changed the Zwift HUD **8 → 9 → 8**. The native
 app, counted CLI shifts, mouse holds, and keyboard holds produced matching gear
-transitions in Zwift's own log. See [test evidence](Documentation/ACCEPTANCE.md).
-The KICKR was unavailable during later campus tests; trainer resistance under
-pedaling load has not been measured.
+transitions in Zwift's own log. The final home check passed **12 live cases with
+the KICKR CORE connected and virtual shifting enabled throughout**. See
+[test evidence](Documentation/ACCEPTANCE.md). These were stationary tests;
+trainer resistance under pedaling load has not been measured.
 
 ![ZwiftShift desktop app](Screenshots/app.png)
 
@@ -56,10 +57,22 @@ Missing feedback is shown as **—**.
 - **Shift up:** Control–Option–↑. **Shift down:** Control–Option–↓.
 - Hold a button or shortcut to repeat. Release stops repetition. Holds have a
   30-second ceiling; release and press again to continue.
-- Open the sliders button to change shortcuts and repeat timing: **200–2000 ms**,
-  default **350 ms**. This also sets timing between counted CLI shifts.
+- Open **… → Settings** or press **Command–,** to change shortcuts and repeat
+  timing: **200–2000 ms**, default **350 ms**. This also sets timing between
+  counted CLI shifts. Existing personal settings are preserved.
 - Shortcuts register only while the controller is connected and paired. Ordinary
   arrow keys remain available. Conflicts are reported in settings.
+
+The compact window follows the Mac's light/dark appearance. **… → Activity**
+opens the live event log; click the connection status for pairing details.
+
+If Zwift says **“You currently don't have a smart trainer paired,”** connect a
+compatible trainer for **Power Source** and **Resistance**. Keep ZwiftShift under
+**Controls**. Use the pairing picker's **All** filter if the KICKR is missing from
+Recommended. The app shows **Select your trainer** if the software controller
+was left under Power Source, and **Trainer not ready** if Zwift has not enabled
+virtual shifting. Game gear feedback alone does not establish trainer readiness.
+See [Zwift's virtual-shifting requirements](https://support.zwift.com/virtual-shifting-faq-r16UiRFlT).
 
 ## CLI
 
@@ -95,6 +108,8 @@ Requires macOS 14 or newer, a Swift 6 toolchain with the macOS SDK, and Apple's
 command-line developer tools. Only macOS 27.2 / Swift 6.4.2 / arm64 has been tested.
 There are **no third-party production dependencies**.
 
+Quit ZwiftShift before rebuilding so the app and CLI run the same version.
+
 ```sh
 cd ~/Desktop/zwiftshit
 Scripts/build.sh            # optimized app + CLI; ad hoc local signing
@@ -118,6 +133,8 @@ tests need Screen Recording. Setup does not disable security protections.
 swift test
 python3 Scripts/live_acceptance.py --live
 python3 Scripts/live_acceptance.py --live --shortcut-tests
+# Require real trainer virtual shifting to stay enabled for every case:
+python3 Scripts/live_acceptance.py --live --require-trainer --desktop-tests --screenshots
 # Optional full UI/shortcut test, with the main dashboard open:
 python3 Scripts/live_acceptance.py --live --desktop-tests --screenshots
 ```
@@ -130,8 +147,10 @@ validate Zwift and do not advertise fake controllers to the game.
 The explicit `--live` script changes actual game gears and checks fresh Zwift log
 lines independently of CLI responses. It returns to the starting gear on success.
 Start at least five gears from each end, close settings sheets, and avoid manual
-controls while it runs. Desktop tests expect default shortcuts and an 880 × 710
-dashboard. Evidence goes under `build/live-*`. Screenshots may contain rider names;
+controls while it runs. Desktop tests expect default shortcuts and use the
+buttons' accessibility identifiers, independent of window position. Accessibility
+access is required for that test helper. Evidence goes under `build/live-*`.
+Screenshots may contain rider names;
 review them before sharing.
 
 ## How it works
@@ -152,6 +171,7 @@ the CLI socket is restricted to the current user.
 - [Research notebook](RESEARCH.md) and [approach comparison](FINDINGS.md)
 - [Test evidence and limits](Documentation/ACCEPTANCE.md)
 - [Public research references](Documentation/REFERENCES.md)
+- [Minimal interface and design references](Documentation/UI.md)
 - [Remaining work](ROADMAP.md)
 
 ## Settings, troubleshooting, and removal

@@ -86,6 +86,7 @@ import Foundation
       status.gear = nil
       status.paired = false
       status.virtualShiftingEnabled = false
+      status.controllerAsPowerSource = false
       status.zwiftRunning = pid != nil
       if pid == nil {
         cancelShifting()
@@ -109,16 +110,9 @@ import Foundation
     publish()
   }
   private func observeLine(_ line: String) {
-    let identity = "device: \(status.settings.deviceName), role: ZP User Input"
-    if line.contains(identity) {
-      if line.contains("Device selected for role") { status.paired = true }
-      if line.contains("Device unselected for role") {
-        status.paired = false
-        cancelShifting()
-      }
-    }
-    if line.contains("Enabled virtual shifting on") { status.virtualShiftingEnabled = true }
-    if line.contains("Disabled virtual shifting on") { status.virtualShiftingEnabled = false }
+    let wasPaired = status.paired
+    status.observeConnectionLine(line)
+    if wasPaired && !status.paired { cancelShifting() }
   }
   private func observe(_ event: GearEvent, historical: Bool) {
     status.gear = telemetry.tracker.gear

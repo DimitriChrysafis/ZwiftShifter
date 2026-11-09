@@ -1,0 +1,226 @@
+[
+  {
+    "test": "cli-up-1",
+    "time": "2026-11-09T12:56:46.917612-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 10,
+    "after": 11,
+    "stable_after_release": 11,
+    "game_log": [
+      "[12:56:47] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 11)"
+    ],
+    "hold_ms": null,
+    "command_exit": 0,
+    "command_output": "Confirmed 1 up shift in Zwift. Gear 11.",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "cli-down-1",
+    "time": "2026-11-09T12:56:48.934700-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 11,
+    "after": 10,
+    "stable_after_release": 10,
+    "game_log": [
+      "[12:56:49] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 10)"
+    ],
+    "hold_ms": null,
+    "command_exit": 0,
+    "command_output": "Confirmed 1 down shift in Zwift. Gear 10.",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "cli-up-5",
+    "time": "2026-11-09T12:56:50.967855-06:00",
+    "passed": true,
+    "expected_changes": 5,
+    "before": 10,
+    "after": 15,
+    "stable_after_release": 15,
+    "game_log": [
+      "[12:56:51] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 11)",
+      "[12:56:51] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 12)",
+      "[12:56:51] INFO LEVEL: [Connectivity] Gearing: Shift 0-(12 -> 13)",
+      "[12:56:52] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 14)",
+      "[12:56:52] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 15)"
+    ],
+    "hold_ms": null,
+    "command_exit": 0,
+    "command_output": "Confirmed 5 up shifts in Zwift. Gear 15.",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "cli-down-5",
+    "time": "2026-11-09T12:56:54.624842-06:00",
+    "passed": true,
+    "expected_changes": 5,
+    "before": 15,
+    "after": 10,
+    "stable_after_release": 10,
+    "game_log": [
+      "[12:56:54] INFO LEVEL: [Connectivity] Gearing: Shift 0-(15 -> 14)",
+      "[12:56:55] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 13)",
+      "[12:56:55] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 12)",
+      "[12:56:55] INFO LEVEL: [Connectivity] Gearing: Shift 0-(12 -> 11)",
+      "[12:56:56] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 10)"
+    ],
+    "hold_ms": null,
+    "command_exit": 0,
+    "command_output": "Confirmed 5 down shifts in Zwift. Gear 10.",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "mouse-tap-up",
+    "time": "2026-11-09T12:56:58.380601-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 10,
+    "after": 11,
+    "stable_after_release": 11,
+    "game_log": [
+      "[12:56:59] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 11)"
+    ],
+    "hold_ms": 80,
+    "command_exit": 0,
+    "command_output": "activate=true",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "mouse-tap-down",
+    "time": "2026-11-09T12:57:01.697213-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 11,
+    "after": 10,
+    "stable_after_release": 10,
+    "game_log": [
+      "[12:57:02] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 10)"
+    ],
+    "hold_ms": 80,
+    "command_exit": 0,
+    "command_output": "activate=true",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "mouse-hold-up",
+    "time": "2026-11-09T12:57:05.024512-06:00",
+    "passed": true,
+    "expected_changes": 4,
+    "before": 10,
+    "after": 14,
+    "stable_after_release": 14,
+    "game_log": [
+      "[12:57:05] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 11)",
+      "[12:57:06] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 12)",
+      "[12:57:06] INFO LEVEL: [Connectivity] Gearing: Shift 0-(12 -> 13)",
+      "[12:57:06] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 14)"
+    ],
+    "hold_ms": 1350,
+    "command_exit": 0,
+    "command_output": "activate=true",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "mouse-hold-down",
+    "time": "2026-11-09T12:57:09.623387-06:00",
+    "passed": true,
+    "expected_changes": 4,
+    "before": 14,
+    "after": 10,
+    "stable_after_release": 10,
+    "game_log": [
+      "[12:57:10] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 13)",
+      "[12:57:10] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 12)",
+      "[12:57:11] INFO LEVEL: [Connectivity] Gearing: Shift 0-(12 -> 11)",
+      "[12:57:11] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 10)"
+    ],
+    "hold_ms": 1350,
+    "command_exit": 0,
+    "command_output": "activate=true",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "shortcut-tap-up",
+    "time": "2026-11-09T12:57:14.142635-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 10,
+    "after": 11,
+    "stable_after_release": 11,
+    "game_log": [
+      "[12:57:14] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 11)"
+    ],
+    "hold_ms": 80,
+    "command_exit": 0,
+    "command_output": "",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "shortcut-tap-down",
+    "time": "2026-11-09T12:57:16.666825-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 11,
+    "after": 10,
+    "stable_after_release": 10,
+    "game_log": [
+      "[12:57:16] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 10)"
+    ],
+    "hold_ms": 80,
+    "command_exit": 0,
+    "command_output": "",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "shortcut-hold-up",
+    "time": "2026-11-09T12:57:19.174556-06:00",
+    "passed": true,
+    "expected_changes": 4,
+    "before": 10,
+    "after": 14,
+    "stable_after_release": 14,
+    "game_log": [
+      "[12:57:19] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 11)",
+      "[12:57:19] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 12)",
+      "[12:57:20] INFO LEVEL: [Connectivity] Gearing: Shift 0-(12 -> 13)",
+      "[12:57:20] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 14)"
+    ],
+    "hold_ms": 1350,
+    "command_exit": 0,
+    "command_output": "",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  },
+  {
+    "test": "shortcut-hold-down",
+    "time": "2026-11-09T12:57:22.934285-06:00",
+    "passed": true,
+    "expected_changes": 4,
+    "before": 14,
+    "after": 10,
+    "stable_after_release": 10,
+    "game_log": [
+      "[12:57:23] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 13)",
+      "[12:57:23] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 12)",
+      "[12:57:24] INFO LEVEL: [Connectivity] Gearing: Shift 0-(12 -> 11)",
+      "[12:57:24] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 10)"
+    ],
+    "hold_ms": 1350,
+    "command_exit": 0,
+    "command_output": "",
+    "command_error": "",
+    "trainer_virtual_shifting_enabled": true
+  }
+]
