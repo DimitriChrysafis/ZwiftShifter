@@ -3,6 +3,10 @@
 A native macOS controller for Zwift virtual shifting. Click, hold a button, use
 a global shortcut, or run `zwiftshift up`. No physical Zwift Click is required.
 
+**For the next AI agent:** start with [HANDOFF.md](HANDOFF.md). It consolidates
+the findings, verified state, protocol details, pitfalls, and remaining work.
+Repository guidance in [AGENTS.md](AGENTS.md) points agents there automatically.
+
 **Actual game integration is verified on Zwift 1.125.0 (168455), Apple silicon,
 macOS 27.2.** The first live test changed the Zwift HUD **8 → 9 → 8**. The native
 app, counted CLI shifts, mouse holds, and keyboard holds produced matching gear
