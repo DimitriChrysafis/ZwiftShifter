@@ -1,0 +1,145 @@
+[
+  {
+    "state": "advertising",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "advertising",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "advertising",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "advertising",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "advertising",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "advertising",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "advertising",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "advertising",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "advertising",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "handshaking",
+    "paired": true,
+    "connectedClients": 0,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  },
+  {
+    "state": "connected",
+    "paired": true,
+    "connectedClients": 1,
+    "gear": {
+      "front": 0,
+      "frontCount": 1,
+      "observedAt": "2026-11-09T17:26:49Z",
+      "rear": 9,
+      "rearCount": 24,
+      "source": "Zwift Log.txt"
+    }
+  }
+]

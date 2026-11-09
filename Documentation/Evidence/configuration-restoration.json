@@ -1,0 +1,33 @@
+{
+  "time": "2026-11-09T11:45:27.078850-06:00",
+  "original_restoration": [
+    {
+      "file": "prefs.xml",
+      "sha256": "71a54dc6d6c5de7e6aeb9669596eac9ae24a53ffc4ff9ab9696b706823241056",
+      "verified": true
+    },
+    {
+      "file": "knowndevices.xml",
+      "sha256": "2c74dfa595fb3aa86dfa1c1daa6fc7b46080853e30ca69b0ca237fc4b6f8bb73",
+      "verified": true
+    },
+    {
+      "file": "stale_devices.xml",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "verified": true
+    }
+  ],
+  "intentional_setup_changes": [
+    {
+      "file": "prefs.xml",
+      "change": "Only LASTZPUSERINPUTDEVICE changed to the software controller selected in the verified UI session.",
+      "sha256": "5a48e914c9003413ccea152a0bcf402170e1a9b13b8f2ef5fe1c736b9370b2ef"
+    },
+    {
+      "file": "knowndevices.xml",
+      "change": "Added only the verified software-controller cache entry; research and campus scan entries removed by restoration.",
+      "sha256": "e0ad39f871abba0a963c223b14a26797e297c50841cd6796b4051488321a58b7"
+    }
+  ],
+  "trainer_settings_match_original": true
+}

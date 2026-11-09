@@ -1,0 +1,64 @@
+[
+  {
+    "test": "tap-up",
+    "time": "2026-11-09T10:56:27.930680-06:00",
+    "hold_ms": 80,
+    "before": 15,
+    "after": 16,
+    "stable_after_release": 16,
+    "game_log": [
+      "[10:56:25] INFO LEVEL: [Connectivity] Gearing: Shift 0-(15 -> 16)"
+    ],
+    "sent": 1,
+    "observed": 1,
+    "busy_after": false
+  },
+  {
+    "test": "tap-down",
+    "time": "2026-11-09T10:56:30.909822-06:00",
+    "hold_ms": 80,
+    "before": 16,
+    "after": 15,
+    "stable_after_release": 15,
+    "game_log": [
+      "[10:56:28] INFO LEVEL: [Connectivity] Gearing: Shift 0-(16 -> 15)"
+    ],
+    "sent": 1,
+    "observed": 1,
+    "busy_after": false
+  },
+  {
+    "test": "hold-up",
+    "time": "2026-11-09T10:56:35.014759-06:00",
+    "hold_ms": 1200,
+    "before": 15,
+    "after": 19,
+    "stable_after_release": 19,
+    "game_log": [
+      "[10:56:31] INFO LEVEL: [Connectivity] Gearing: Shift 0-(15 -> 16)",
+      "[10:56:32] INFO LEVEL: [Connectivity] Gearing: Shift 0-(16 -> 17)",
+      "[10:56:32] INFO LEVEL: [Connectivity] Gearing: Shift 0-(17 -> 18)",
+      "[10:56:32] INFO LEVEL: [Connectivity] Gearing: Shift 0-(18 -> 19)"
+    ],
+    "sent": 4,
+    "observed": 4,
+    "busy_after": false
+  },
+  {
+    "test": "hold-down",
+    "time": "2026-11-09T10:56:39.105662-06:00",
+    "hold_ms": 1200,
+    "before": 19,
+    "after": 15,
+    "stable_after_release": 15,
+    "game_log": [
+      "[10:56:35] INFO LEVEL: [Connectivity] Gearing: Shift 0-(19 -> 18)",
+      "[10:56:36] INFO LEVEL: [Connectivity] Gearing: Shift 0-(18 -> 17)",
+      "[10:56:36] INFO LEVEL: [Connectivity] Gearing: Shift 0-(17 -> 16)",
+      "[10:56:36] INFO LEVEL: [Connectivity] Gearing: Shift 0-(16 -> 15)"
+    ],
+    "sent": 4,
+    "observed": 4,
+    "busy_after": false
+  }
+]

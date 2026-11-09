@@ -1,0 +1,128 @@
+[
+  {
+    "test": "cli-up-1",
+    "time": "2026-11-09T11:40:36.155455-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 13,
+    "after": 14,
+    "stable_after_release": 14,
+    "game_log": [
+      "[11:40:36] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 14)"
+    ],
+    "hold_ms": null,
+    "command_exit": 0
+  },
+  {
+    "test": "cli-down-1",
+    "time": "2026-11-09T11:40:38.137830-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 14,
+    "after": 13,
+    "stable_after_release": 13,
+    "game_log": [
+      "[11:40:38] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 13)"
+    ],
+    "hold_ms": null,
+    "command_exit": 0
+  },
+  {
+    "test": "cli-up-5",
+    "time": "2026-11-09T11:40:40.227399-06:00",
+    "passed": true,
+    "expected_changes": 5,
+    "before": 13,
+    "after": 18,
+    "stable_after_release": 18,
+    "game_log": [
+      "[11:40:40] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 14)",
+      "[11:40:40] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 15)",
+      "[11:40:41] INFO LEVEL: [Connectivity] Gearing: Shift 0-(15 -> 16)",
+      "[11:40:41] INFO LEVEL: [Connectivity] Gearing: Shift 0-(16 -> 17)",
+      "[11:40:41] INFO LEVEL: [Connectivity] Gearing: Shift 0-(17 -> 18)"
+    ],
+    "hold_ms": null,
+    "command_exit": 0
+  },
+  {
+    "test": "cli-down-5",
+    "time": "2026-11-09T11:40:43.741785-06:00",
+    "passed": true,
+    "expected_changes": 5,
+    "before": 18,
+    "after": 13,
+    "stable_after_release": 13,
+    "game_log": [
+      "[11:40:43] INFO LEVEL: [Connectivity] Gearing: Shift 0-(18 -> 17)",
+      "[11:40:44] INFO LEVEL: [Connectivity] Gearing: Shift 0-(17 -> 16)",
+      "[11:40:44] INFO LEVEL: [Connectivity] Gearing: Shift 0-(16 -> 15)",
+      "[11:40:44] INFO LEVEL: [Connectivity] Gearing: Shift 0-(15 -> 14)",
+      "[11:40:45] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 13)"
+    ],
+    "hold_ms": null,
+    "command_exit": 0
+  },
+  {
+    "test": "shortcut-tap-up",
+    "time": "2026-11-09T11:40:47.161022-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 13,
+    "after": 14,
+    "stable_after_release": 14,
+    "game_log": [
+      "[11:40:47] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 14)"
+    ],
+    "hold_ms": 80,
+    "command_exit": 0
+  },
+  {
+    "test": "shortcut-tap-down",
+    "time": "2026-11-09T11:40:49.730616-06:00",
+    "passed": true,
+    "expected_changes": 1,
+    "before": 14,
+    "after": 13,
+    "stable_after_release": 13,
+    "game_log": [
+      "[11:40:50] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 13)"
+    ],
+    "hold_ms": 80,
+    "command_exit": 0
+  },
+  {
+    "test": "shortcut-hold-up",
+    "time": "2026-11-09T11:40:52.299011-06:00",
+    "passed": true,
+    "expected_changes": 4,
+    "before": 13,
+    "after": 17,
+    "stable_after_release": 17,
+    "game_log": [
+      "[11:40:52] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 14)",
+      "[11:40:52] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 15)",
+      "[11:40:53] INFO LEVEL: [Connectivity] Gearing: Shift 0-(15 -> 16)",
+      "[11:40:53] INFO LEVEL: [Connectivity] Gearing: Shift 0-(16 -> 17)"
+    ],
+    "hold_ms": 1200,
+    "command_exit": 0
+  },
+  {
+    "test": "shortcut-hold-down",
+    "time": "2026-11-09T11:40:55.986359-06:00",
+    "passed": true,
+    "expected_changes": 4,
+    "before": 17,
+    "after": 13,
+    "stable_after_release": 13,
+    "game_log": [
+      "[11:40:56] INFO LEVEL: [Connectivity] Gearing: Shift 0-(17 -> 16)",
+      "[11:40:56] INFO LEVEL: [Connectivity] Gearing: Shift 0-(16 -> 15)",
+      "[11:40:56] INFO LEVEL: [Connectivity] Gearing: Shift 0-(15 -> 14)",
+      "[11:40:57] INFO LEVEL: [Connectivity] Gearing: Shift 0-(14 -> 13)"
+    ],
+    "hold_ms": 1200,
+    "command_exit": 0
+  }
+]

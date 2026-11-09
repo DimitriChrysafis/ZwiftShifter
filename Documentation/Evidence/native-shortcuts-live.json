@@ -1,0 +1,64 @@
+[
+  {
+    "test": "shortcut-up",
+    "time": "2026-11-09T11:25:03.771096-06:00",
+    "hold_ms": 80,
+    "before": 9,
+    "after": 10,
+    "stable_after_release": 10,
+    "sent": 1,
+    "observed": 1,
+    "busy_after": false,
+    "game_log": [
+      "[11:25:01] INFO LEVEL: [Connectivity] Gearing: Shift 0-(9 -> 10)"
+    ]
+  },
+  {
+    "test": "shortcut-down",
+    "time": "2026-11-09T11:25:05.992511-06:00",
+    "hold_ms": 80,
+    "before": 10,
+    "after": 9,
+    "stable_after_release": 9,
+    "sent": 1,
+    "observed": 1,
+    "busy_after": false,
+    "game_log": [
+      "[11:25:04] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 9)"
+    ]
+  },
+  {
+    "test": "shortcut-hold-up",
+    "time": "2026-11-09T11:25:09.353877-06:00",
+    "hold_ms": 1200,
+    "before": 9,
+    "after": 13,
+    "stable_after_release": 13,
+    "sent": 4,
+    "observed": 4,
+    "busy_after": false,
+    "game_log": [
+      "[11:25:06] INFO LEVEL: [Connectivity] Gearing: Shift 0-(9 -> 10)",
+      "[11:25:06] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 11)",
+      "[11:25:07] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 12)",
+      "[11:25:07] INFO LEVEL: [Connectivity] Gearing: Shift 0-(12 -> 13)"
+    ]
+  },
+  {
+    "test": "shortcut-hold-down",
+    "time": "2026-11-09T11:25:12.633783-06:00",
+    "hold_ms": 1200,
+    "before": 13,
+    "after": 9,
+    "stable_after_release": 9,
+    "sent": 4,
+    "observed": 4,
+    "busy_after": false,
+    "game_log": [
+      "[11:25:09] INFO LEVEL: [Connectivity] Gearing: Shift 0-(13 -> 12)",
+      "[11:25:10] INFO LEVEL: [Connectivity] Gearing: Shift 0-(12 -> 11)",
+      "[11:25:10] INFO LEVEL: [Connectivity] Gearing: Shift 0-(11 -> 10)",
+      "[11:25:10] INFO LEVEL: [Connectivity] Gearing: Shift 0-(10 -> 9)"
+    ]
+  }
+]

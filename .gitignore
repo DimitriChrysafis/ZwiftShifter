@@ -1,0 +1,12 @@
+.DS_Store
+.build/
+.swiftpm/
+build/*
+!build/.gitkeep
+LocalEvidence/
+*.xcuserstate
+*.xcuserdatad/
+__pycache__/
+.venv/
+.ruff_cache/
+Screenshots/private/

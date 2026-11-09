@@ -1,0 +1,36 @@
+[
+  {
+    "test": "600ms-keyboard-hold-up",
+    "hold_ms": 1550,
+    "before": 13,
+    "after": 16,
+    "sent": 3,
+    "observed": 3,
+    "duration_seconds": 2.8569457910052733,
+    "busy": false
+  },
+  {
+    "test": "600ms-keyboard-hold-down",
+    "hold_ms": 1550,
+    "before": 16,
+    "after": 13,
+    "sent": 3,
+    "observed": 3,
+    "duration_seconds": 2.897744457994122,
+    "busy": false
+  },
+  {
+    "test": "custom-control-option-shift-up",
+    "before": 13,
+    "after": 14,
+    "sent": 1,
+    "observed": 1
+  },
+  {
+    "test": "custom-control-option-shift-down",
+    "before": 14,
+    "after": 13,
+    "sent": 1,
+    "observed": 1
+  }
+]

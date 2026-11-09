@@ -1,0 +1,14 @@
+{
+  "time": "2026-11-09T11:40:34.781175-06:00",
+  "initial_gear": {
+    "front": 0,
+    "frontCount": 1,
+    "observedAt": "2026-11-09T17:40:24Z",
+    "rear": 13,
+    "rearCount": 24,
+    "source": "Zwift Log.txt"
+  },
+  "virtual_shifting_reported_by_zwift": false,
+  "repeat_ms": 350,
+  "scope": "Actual game gear transitions; physical trainer resistance is not measured by this script."
+}
