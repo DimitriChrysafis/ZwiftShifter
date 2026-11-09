@@ -3,7 +3,7 @@ import SwiftUI
 import ZwiftShiftCore
 
 enum AppPanel: String, Identifiable {
-  case settings, connection, activity
+  case settings, connection, activity, phone
   var id: String { rawValue }
 }
 
@@ -89,7 +89,7 @@ enum AppPanel: String, Identifiable {
           NSApp.setActivationPolicy(.regular)
         }
     }
-    .defaultSize(width: 380, height: 320)
+    .defaultSize(width: 380, height: 350)
     .windowResizability(.contentSize)
     .commands {
       CommandGroup(replacing: .newItem) {}
@@ -98,6 +98,7 @@ enum AppPanel: String, Identifiable {
           .keyboardShortcut(",", modifiers: .command)
       }
       CommandGroup(after: .help) {
+        Button("Phone controls") { model.panel = .phone }
         Button("Connection help") { model.panel = .connection }
         Button("Activity") { model.panel = .activity }
       }

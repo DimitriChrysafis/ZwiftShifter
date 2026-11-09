@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-09",
+  "scope": "Read-only observation of existing KICKR Cycling Power notifications inside Zwift; physical pedaling during this capture not confirmed.",
+  "did_send_shift": false,
+  "game_gear": 5,
+  "power_samples": [
+    {
+      "time": "2026-11-09T15:04:24.393000-06:00",
+      "watts": 0
+    },
+    {
+      "time": "2026-11-09T15:04:26.537000-06:00",
+      "watts": 0
+    },
+    {
+      "time": "2026-11-09T15:04:28.390000-06:00",
+      "watts": 0
+    },
+    {
+      "time": "2026-11-09T15:04:30.437000-06:00",
+      "watts": 0
+    },
+    {
+      "time": "2026-11-09T15:04:32.387000-06:00",
+      "watts": 0
+    },
+    {
+      "time": "2026-11-09T15:04:34.435000-06:00",
+      "watts": 0
+    },
+    {
+      "time": "2026-11-09T15:04:36.385000-06:00",
+      "watts": 0
+    },
+    {
+      "time": "2026-11-09T15:04:38.432000-06:00",
+      "watts": 0
+    },
+    {
+      "time": "2026-11-09T15:04:40.382000-06:00",
+      "watts": 0
+    },
+    {
+      "time": "2026-11-09T15:04:42.430000-06:00",
+      "watts": 0
+    }
+  ],
+  "detached": true,
+  "repair_verified": false
+}

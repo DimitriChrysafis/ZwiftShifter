@@ -10,7 +10,8 @@ let package = Package(
         .executable(name: "zwiftshift", targets: ["zwiftshift"]),
     ],
     targets: [
-        .target(name: "ZwiftShiftCore", linkerSettings: [.linkedFramework("Network"), .linkedFramework("AppKit")]),
+        .target(name: "ZwiftShiftCore", resources: [.copy("Web")],
+                linkerSettings: [.linkedFramework("Network"), .linkedFramework("AppKit")]),
         .executableTarget(name: "ZwiftShiftApp", dependencies: ["ZwiftShiftCore"],
                           linkerSettings: [.linkedFramework("Carbon")]),
         .executableTarget(name: "zwiftshift", dependencies: ["ZwiftShiftCore"]),

@@ -9,5 +9,7 @@ remove_link() {
   fi
 }
 remove_link "$project_root/build/zwiftshift" "$HOME/.local/bin/zwiftshift"
+remove_link "$project_root/build/ZwiftShift.app" "$HOME/Desktop/ZwiftShift.app"
+# Remove the previous location only if it is still this project's exact link.
 remove_link "$project_root/build/ZwiftShift.app" "$HOME/Applications/ZwiftShift.app"
-echo 'Quit ZwiftShift to stop its local service. Project files, settings, and backups are preserved.'
+echo 'Quit ZwiftShift to stop its services and ngrok tunnel. Project files, settings, and backups are preserved.'

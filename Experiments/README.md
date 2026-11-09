@@ -80,3 +80,11 @@ them; offsets are not a stable API. They observe calls and decoder failures,
 never invoke a shift function or patch persistent files. Normal LLDB/Frida
 attachment worked on the tested signed build without security changes. The
 production app uses neither.
+
+`trace_trainer_values.js` observes the existing KICKR BLE value callback without
+making another Bluetooth connection or changing subscriptions. Use it through
+`observe.py --seconds 20`; it samples selected measurement characteristics at
+most once per second and decodes Cycling Power watts. Unlike the offset-based
+scripts, it finds the inspected Objective-C class/method and fails if absent.
+See [the power investigation](../Documentation/KICKR_POWER.md) for the exact
+scope and remaining physical test. Keep raw output in ignored local storage.

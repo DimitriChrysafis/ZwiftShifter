@@ -10,6 +10,9 @@ flowchart LR
   UI[SwiftUI buttons / Carbon shortcuts] --> Service[ShiftService]
   CLI[zwiftshift CLI] --> RPC[Owner-only Unix socket]
   RPC --> Service
+  Phone[Phone browser] --> HTTP[Authenticated HTTP server]
+  Internet[ngrok HTTPS tunnel] --> HTTP
+  HTTP --> Service
   Service --> Pulse[Bounded press / release scheduling]
   Pulse --> LAN[Network.framework DirCon server]
   DNS[Bonjour discovery] --> Zwift[Zwift LAN exercise-device service]
@@ -85,12 +88,20 @@ read-only observer is `Experiments/instrumentation/trace_shifts.js`.
 | `ButtonPulse`, `ShiftService` | Pulses, counts, hold limits, cancellation, confirmation |
 | `GearTelemetry` | Bounded read-only log tail, partial lines, rotation, dynamic dimensions |
 | `LocalRPC` | Current-user IPC, exclusive ownership, resource limits |
+| `PhoneHTTP`, `PhoneRouter` | Bounded HTTP, private-link authentication, expiry/replay checks, bundled web assets |
+| `PhoneControl`, `NgrokTunnel` | Server lifecycle, local URLs, optional ngrok worker and shutdown |
 | `ZwiftShiftApp` | SwiftUI, Carbon shortcuts, settings, lifecycle |
 | `zwiftshift` | Argument parsing and RPC; shared-core foreground service |
 
 Mutable service/UI state uses the main actor with Swift 6 concurrency checking.
 Network callbacks run on the main queue; network I/O and timers do not block it.
 Blocking CLI socket I/O runs only in the separate CLI process.
+
+The phone endpoint calls `ShiftService.shift` with a single press. It has no
+separate DirCon/protocol implementation. Browser holds serialize confirmed
+requests; the server never retains a remotely held button. The browser's
+observed gear still comes from `GearTelemetry`. The HTTP server is distinct from
+the same-Mac-only DirCon endpoint; ngrok forwards only the phone port.
 
 ## Lifecycle and failure behavior
 
@@ -110,6 +121,13 @@ Blocking CLI socket I/O runs only in the separate CLI process.
 - Gear count comes from Zwift, never a fixed 24. Historical feedback is labeled
   observed; only fresh matching transitions confirm commands.
 - Logs rotate at 1 MiB with one previous file. UI memory retains 100 events.
+- Phone requests have 8 KiB headers and 2 KiB bodies, 24 concurrent connections,
+  bounded deadlines, an 8-action/second rate limit, and a bounded replay cache.
+  Fresh commands expire within five seconds; the browser requests two seconds.
+- The app starts its HTTP listener automatically. Internet access is persisted;
+  ngrok startup has a 25-second deadline and explicit retry. The small CLI worker
+  owns ngrok and observes a pipe from the app. EOF or parent exit shuts down and
+  reaps ngrok, including after an app crash.
 
 The undocumented protocol is version-sensitive. Changed handshakes or log formats
 can fail confirmation; the app never substitutes a fabricated gear.

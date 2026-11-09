@@ -1,7 +1,8 @@
 # ZwiftShift
 
 A native macOS controller for Zwift virtual shifting. Click, hold a button, use
-a global shortcut, or run `zwiftshift up`. No physical Zwift Click is required.
+a global shortcut, open the phone controls, or run `zwiftshift up`.
+No physical Zwift Click is required.
 
 **For the next AI agent:** start with [HANDOFF.md](HANDOFF.md). It consolidates
 the findings, verified state, protocol details, pitfalls, and remaining work.
@@ -19,11 +20,11 @@ trainer resistance under pedaling load has not been measured.
 
 ## Launch on this Mac
 
-Open **`~/Applications/ZwiftShift.app`**. The installed CLI is
+Open **`~/Desktop/ZwiftShift.app`**. The installed CLI is
 **`~/.local/bin/zwiftshift`**, already on this Mac's PATH.
 
 ```sh
-open ~/Applications/ZwiftShift.app
+open ~/Desktop/ZwiftShift.app
 zwiftshift status
 zwiftshift up
 zwiftshift down
@@ -70,6 +71,27 @@ Missing feedback is shown as **—**.
 The compact window follows the Mac's light/dark appearance. **… → Activity**
 opens the live event log; click the connection status for pairing details.
 
+## Phone controls
+
+Launching the app also starts its small web server. Click the URL beneath the
+connection status, or choose **… → Phone controls**, then scan the QR code on your
+phone. **Copy private link** includes the access key; copying the displayed base
+address alone does not authorize shifting. The page has the observed gear and
+two buttons; hold either to repeat at your configured interval.
+
+The local link works on the same network. Turn on **Internet access via ngrok**
+in that panel to use the HTTPS link from another network, including cellular.
+Ngrok is installed and authenticated on this Mac; the app uses its existing
+configuration without changing it. Internet access is a persisted preference.
+Keep ZwiftShift and Zwift running on the Mac. The public address may change after
+relaunch; use the current QR/link. A free ngrok account may show **Visit Site**
+before the controls open.
+
+Only people with the private link can read ride status or shift. **Reset links**
+revokes previously copied links. Quitting the app stops its server and tunnel.
+See [phone setup and HTTP interface](Documentation/PHONE_CONTROLS.md) for other
+machines, connection errors, test scope, and protocol details.
+
 If Zwift says **“You currently don't have a smart trainer paired,”** connect a
 compatible trainer for **Power Source** and **Resistance**. Keep ZwiftShift under
 **Controls**. Use the pairing picker's **All** filter if the KICKR is missing from
@@ -110,14 +132,15 @@ Ctrl-C stops `serve` and releases any held button.
 
 Requires macOS 14 or newer, a Swift 6 toolchain with the macOS SDK, and Apple's
 command-line developer tools. Only macOS 27.2 / Swift 6.4.2 / arm64 has been tested.
-There are **no third-party production dependencies**.
+The native app and CLI have **no third-party package dependencies**. Internet
+phone access optionally runs the separately installed ngrok executable.
 
 Quit ZwiftShift before rebuilding so the app and CLI run the same version.
 
 ```sh
 cd ~/Desktop/zwiftshit
 Scripts/build.sh            # optimized app + CLI; ad hoc local signing
-Scripts/install.sh          # symlinks in ~/Applications and ~/.local/bin
+Scripts/install.sh          # symlinks on ~/Desktop and in ~/.local/bin
 Scripts/run.sh
 ```
 
@@ -135,6 +158,7 @@ tests need Screen Recording. Setup does not disable security protections.
 
 ```sh
 swift test
+node --test Tests/phone-controls.test.mjs
 python3 Scripts/live_acceptance.py --live
 python3 Scripts/live_acceptance.py --live --shortcut-tests
 # Require real trainer virtual shifting to stay enabled for every case:
@@ -146,7 +170,9 @@ python3 Scripts/live_acceptance.py --live --desktop-tests --screenshots
 Unit and local integration tests cover framing, captured protocol examples,
 parsing, dynamic gear state, cancellation, timing, real Unix RPC, real TCP
 negotiation, malformed frames, reconnect, and log rotation. They do not claim to
-validate Zwift and do not advertise fake controllers to the game.
+validate Zwift and do not advertise fake controllers to the game. Phone tests
+also cover HTTP framing, authentication, replay/expiry checks, a real HTTP
+listener, and browser hold/release scheduling.
 
 The explicit `--live` script changes actual game gears and checks fresh Zwift log
 lines independently of CLI responses. It returns to the starting gear on success.
@@ -165,13 +191,15 @@ component, completes the observed handshake, and sends button press/release
 notifications. Zwift dispatches these to its cassette-shift actions. Your trainer
 remains paired directly to Zwift.
 
-The product uses no Bluetooth loopback, driver, debugger, patched game, account
-token, or server API. The network listener accepts only this Mac's addresses;
-the CLI socket is restricted to the current user.
+The product uses no Bluetooth loopback, driver, debugger, patched game, Zwift
+account token, or Zwift server API. The DirCon listener accepts only this Mac's
+addresses; the CLI socket is restricted to the current user. Phone controls use
+a separate authenticated HTTP listener and the same shared shifting service.
 
 - [Architecture and execution path](ARCHITECTURE.md)
 - [Wire protocol](Documentation/PROTOCOL.md)
 - [Local CLI/app interface](Documentation/LOCAL_INTERFACE.md)
+- [Phone controls and HTTP interface](Documentation/PHONE_CONTROLS.md)
 - [Research notebook](RESEARCH.md) and [approach comparison](FINDINGS.md)
 - [Test evidence and limits](Documentation/ACCEPTANCE.md)
 - [Public research references](Documentation/REFERENCES.md)
@@ -180,8 +208,8 @@ the CLI socket is restricted to the current user.
 
 ## Settings, troubleshooting, and removal
 
-Runtime state lives in **`build/runtime/`**: `settings.json`, owner-only
-`control.sock`, `service.lock`, and bounded `events.jsonl` logs. Device identity is
+Runtime state lives in **`build/runtime/`**: `settings.json`, private `phone.json`,
+owner-only `control.sock`, `service.lock`, and bounded `events.jsonl` logs. Device identity is
 generated once and persisted. `ZWIFTSHIFT_HOME` overrides this directory for both
 app and CLI; use the same value for both.
 
@@ -191,6 +219,12 @@ after moving networks. For unconfirmed shifts, check the ride, gear limits,
 trainer settings, and Documents permission. `zwiftshift diagnostics` provides a
 bounded history without reading credentials. A future Zwift update may require
 protocol changes; unknown handshake versions fail explicitly.
+
+For **Connected but 0 watts**, first check that Power Source is the actual KICKR.
+The software controller never supplies power. A Connected label and a changing
+gear do not prove the trainer is measuring your pedaling. The current diagnostic
+record is [KICKR power investigation](Documentation/KICKR_POWER.md); its unresolved
+checks must not be reported as successful riding tests.
 
 ```sh
 # Quit ZwiftShift, then remove only this project's installed symlinks:

@@ -1,0 +1,12 @@
+[
+  {
+    "test": "normal_quit",
+    "seconds": 0.0,
+    "remaining": []
+  },
+  {
+    "test": "app_crash_cleanup",
+    "seconds": 0.1,
+    "remaining_children": []
+  }
+]

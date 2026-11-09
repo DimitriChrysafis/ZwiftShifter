@@ -15,6 +15,6 @@ install_link() {
   ln -s "$source_path" "$target_path"
 }
 install_link "$project_root/build/zwiftshift" "$HOME/.local/bin/zwiftshift"
-install_link "$project_root/build/ZwiftShift.app" "$HOME/Applications/ZwiftShift.app"
-echo "Installed ZwiftShift in ~/Applications and zwiftshift in ~/.local/bin."
+install_link "$project_root/build/ZwiftShift.app" "$HOME/Desktop/ZwiftShift.app"
+echo "Installed ZwiftShift on ~/Desktop and zwiftshift in ~/.local/bin."
 case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) echo 'Add ~/.local/bin to PATH to run zwiftshift by name.' ;; esac

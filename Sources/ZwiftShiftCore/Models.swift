@@ -102,6 +102,7 @@ public struct ServiceStatus: Codable, Sendable {
   public var observedChanges = 0
   public var lastError: String?
   public var events: [LogEntry] = []
+  public var phone: PhoneStatus?
   public var canShift: Bool {
     zwiftRunning && paired && connectedClients > 0 && state == "connected"
   }

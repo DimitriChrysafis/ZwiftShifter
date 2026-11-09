@@ -1,0 +1,86 @@
+:root {
+  color-scheme: light dark;
+  --background: #fafafa;
+  --foreground: #191919;
+  --secondary: #717171;
+  --button: #fff;
+  --border: #dedede;
+  --pressed: #ededed;
+  --error: #aa4024;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-text-size-adjust: 100%;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #151515;
+    --foreground: #f1f1f1;
+    --secondary: #999;
+    --button: #202020;
+    --border: #363636;
+    --pressed: #303030;
+    --error: #f0a58f;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+main {
+  max-width: 480px;
+  min-height: 100svh;
+  margin: auto;
+  padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+}
+header { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; }
+.name { font-size: 14px; font-weight: 600; white-space: nowrap; }
+#connection { color: var(--secondary); font-size: 12px; text-align: right; }
+.readout {
+  flex: 1;
+  min-height: 240px;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.caption { color: var(--secondary); font-size: 13px; min-height: 18px; }
+#gear { font-size: clamp(100px, 27vw, 144px); line-height: 1.2; font-weight: 300; font-variant-numeric: tabular-nums; letter-spacing: -0.045em; }
+.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+button {
+  appearance: none;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--button);
+  color: var(--foreground);
+  min-height: 124px;
+  padding: 16px 8px;
+  font: 500 15px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+.arrow { font-size: 30px; font-weight: 400; line-height: 1; }
+button:disabled { opacity: 0.4; cursor: default; }
+button.pressed { background: var(--pressed); }
+button:focus-visible { outline: 2px solid var(--foreground); outline-offset: 4px; }
+#message { margin: 16px 0 32px; min-height: 34px; font-size: 12px; line-height: 1.45; color: var(--secondary); text-align: center; }
+#message.error { color: var(--error); }
+footer { color: var(--secondary); text-align: center; font-size: 11px; }
+@media (min-width: 700px) { main { min-height: min(800px, 100svh); padding-top: 40px; } }
+@media (max-height: 520px) {
+  main { padding-top: 16px; padding-bottom: 16px; }
+  .readout { min-height: 130px; padding: 8px 0; }
+  #gear { font-size: 80px; }
+  button { min-height: 80px; flex-direction: row; }
+  #message { margin-bottom: 12px; }
+}

@@ -1,5 +1,31 @@
 # Acceptance evidence — 2026-11-09
 
+## Later continuation: phone controls and power report
+
+The phone extension passed **28 Swift tests** (the prior 20 plus eight HTTP/
+phone cases) and **four JavaScript hold-scheduler tests**. Real authenticated
+status requests worked over local HTTP and public ngrok HTTPS; unauthenticated
+requests returned 401. The public browser page rendered live gear after adding
+ngrok's interstitial-bypass header to API requests. Normal quit and an idle
+app-crash cleanup test both left no owned helper/ngrok processes behind. The
+existing settings and ngrok config hashes were preserved.
+Reviewed records: [Swift checks](Evidence/phone-unit-tests.txt) and
+[owned tunnel process cleanup](Evidence/phone-lifecycle.json).
+
+The first `phone_acceptance.py` live run was rejected at preflight because the
+game was at its upper gear limit. It sent no shifts and is not a passing live
+test. The user subsequently reported no watts when pedaling; further automated
+shifts were paused. **Physical-phone/cellular use and controlled live phone
+tap/hold acceptance remain unverified.** See [phone controls](PHONE_CONTROLS.md).
+
+The zero-watt investigation found the actual KICKR selected for power, then
+completed a full Bluetooth reconnect. A read-only observer saw explicit zero
+Cycling Power packets arriving in Zwift. The post-reconnect pedaling confirmation
+and any necessary physical power-cycle test are pending. See
+[the diagnostic record](KICKR_POWER.md). This does not invalidate the earlier
+game-gear evidence, but no earlier stationary check proves working riding power
+or resistance. Do not report the zero-watt issue as repaired yet.
+
 ## What was actually verified
 
 **Zwift's own gear changed without a physical shifting controller.** Tests used

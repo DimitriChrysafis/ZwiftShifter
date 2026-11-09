@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="no-referrer">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ZwiftShift">
+  <title>ZwiftShift</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/app.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <span class="name">ZwiftShift</span>
+      <span id="connection" role="status">Connecting…</span>
+    </header>
+    <section class="readout" aria-label="Gear reported by Zwift">
+      <span class="caption">Gear</span>
+      <span id="gear" aria-live="polite">—</span>
+      <span id="gear-count" class="caption">&nbsp;</span>
+    </section>
+    <div class="controls">
+      <button id="shift-down" type="button" disabled>
+        <span class="arrow" aria-hidden="true">↓</span><span>Shift down</span>
+      </button>
+      <button id="shift-up" type="button" disabled>
+        <span class="arrow" aria-hidden="true">↑</span><span>Shift up</span>
+      </button>
+    </div>
+    <p id="message" role="status">Hold to repeat</p>
+    <footer>Keep ZwiftShift open on your Mac.</footer>
+  </main>
+</body>
+</html>

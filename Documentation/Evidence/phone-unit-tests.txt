@@ -1,0 +1,84 @@
+Test Suite 'All tests' started at 2026-11-09 15:11:42.293.
+Test Suite 'ZwiftShiftCoreTests.xctest' started at 2026-11-09 15:11:42.294.
+Test Suite 'CoreTests' started at 2026-11-09 15:11:42.294.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedButtonTransitions]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedButtonTransitions]' passed (0.002 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedHandshakeAndCapabilities]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testCapturedHandshakeAndCapabilities]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testCLIValidation]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testCLIValidation]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testFragmentedAndCoalescedFrames]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testFragmentedAndCoalescedFrames]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testFrameBounds]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testFrameBounds]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testObservedGearAndDynamicDimensions]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testObservedGearAndDynamicDimensions]' passed (0.001 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testPowerBootstrapDoesNotImplyTrainerReadiness]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testPowerBootstrapDoesNotImplyTrainerReadiness]' passed (0.001 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testProtobufRejectsTruncationAndOverflow]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testProtobufRejectsTruncationAndOverflow]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testSessionRequiresSubscriptionsAndHandshake]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testSessionRequiresSubscriptionsAndHandshake]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testSettingsBoundsAndShortcutConflicts]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testSettingsBoundsAndShortcutConflicts]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testUnknownCharacteristicsAreRejectedAndNoPowerIsFabricated]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testUnknownCharacteristicsAreRejectedAndNoPowerIsFabricated]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.CoreTests testUnpairingPowerAndControlsAreIndependent]' started.
+Test Case '-[ZwiftShiftCoreTests.CoreTests testUnpairingPowerAndControlsAreIndependent]' passed (0.000 seconds).
+Test Suite 'CoreTests' passed at 2026-11-09 15:11:42.301.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.006 (0.007) seconds
+Test Suite 'LocalIntegrationTests' started at 2026-11-09 15:11:42.301.
+Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testRealUnixRPCRoundTripAndExclusiveOwnership]' started.
+Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testRealUnixRPCRoundTripAndExclusiveOwnership]' passed (0.002 seconds).
+Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testRefusesToReplaceUnexpectedFile]' started.
+Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testRefusesToReplaceUnexpectedFile]' passed (0.001 seconds).
+Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testTailHandlesPartialLinesAndRotation]' started.
+Test Case '-[ZwiftShiftCoreTests.LocalIntegrationTests testTailHandlesPartialLinesAndRotation]' passed (0.001 seconds).
+Test Suite 'LocalIntegrationTests' passed at 2026-11-09 15:11:42.306.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.005 (0.005) seconds
+Test Suite 'NetworkIntegrationTests' started at 2026-11-09 15:11:42.306.
+Test Case '-[ZwiftShiftCoreTests.NetworkIntegrationTests testRealTCPHandshakeButtonDeliveryDisconnectAndReconnect]' started.
+Test Case '-[ZwiftShiftCoreTests.NetworkIntegrationTests testRealTCPHandshakeButtonDeliveryDisconnectAndReconnect]' passed (0.020 seconds).
+Test Suite 'NetworkIntegrationTests' passed at 2026-11-09 15:11:42.326.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.020 (0.020) seconds
+Test Suite 'PhoneHTTPTests' started at 2026-11-09 15:11:42.326.
+Test Case '-[ZwiftShiftCoreTests.PhoneHTTPTests testFragmentedRequestAndBoundedFraming]' started.
+Test Case '-[ZwiftShiftCoreTests.PhoneHTTPTests testFragmentedRequestAndBoundedFraming]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.PhoneHTTPTests testNgrokOutputExtractsOnlyEndpointAndErrorCode]' started.
+Test Case '-[ZwiftShiftCoreTests.PhoneHTTPTests testNgrokOutputExtractsOnlyEndpointAndErrorCode]' passed (0.001 seconds).
+Test Suite 'PhoneHTTPTests' passed at 2026-11-09 15:11:42.328.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'PhoneRouterTests' started at 2026-11-09 15:11:42.328.
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testAuthenticationOriginAndNoPrivateStateLeak]' started.
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testAuthenticationOriginAndNoPrivateStateLeak]' passed (0.002 seconds).
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testDuplicateRequestsAreNeverReexecutedAndRotationRevokesOldLinks]' started.
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testDuplicateRequestsAreNeverReexecutedAndRotationRevokesOldLinks]' passed (0.001 seconds).
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testExpiredMalformedAndFutureCommandsNeverShift]' started.
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testExpiredMalformedAndFutureCommandsNeverShift]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testRateLimitBoundsAcceptedCommands]' started.
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testRateLimitBoundsAcceptedCommands]' passed (0.001 seconds).
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testRealHTTPTransportAuthenticationSharedHandlerAndRestart]' started.
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testRealHTTPTransportAuthenticationSharedHandlerAndRestart]' passed (0.051 seconds).
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testTokenStorageStablePrivateAndNgrokOverlayContainsNoCredential]' started.
+Test Case '-[ZwiftShiftCoreTests.PhoneRouterTests testTokenStorageStablePrivateAndNgrokOverlayContainsNoCredential]' passed (0.003 seconds).
+Test Suite 'PhoneRouterTests' passed at 2026-11-09 15:11:42.385.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.057 (0.058) seconds
+Test Suite 'PulseTests' started at 2026-11-09 15:11:42.385.
+Test Case '-[ZwiftShiftCoreTests.PulseTests testCancellationAlwaysReleasesButton]' started.
+Test Case '-[ZwiftShiftCoreTests.PulseTests testCancellationAlwaysReleasesButton]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.PulseTests testMinimumPressAndRelease]' started.
+Test Case '-[ZwiftShiftCoreTests.PulseTests testMinimumPressAndRelease]' passed (0.000 seconds).
+Test Case '-[ZwiftShiftCoreTests.PulseTests testRealPulseDurationAndCancellation]' started.
+Test Case '-[ZwiftShiftCoreTests.PulseTests testRealPulseDurationAndCancellation]' passed (0.143 seconds).
+Test Case '-[ZwiftShiftCoreTests.PulseTests testTransportFailureStillAttemptsRelease]' started.
+Test Case '-[ZwiftShiftCoreTests.PulseTests testTransportFailureStillAttemptsRelease]' passed (0.000 seconds).
+Test Suite 'PulseTests' passed at 2026-11-09 15:11:42.529.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.143 (0.144) seconds
+Test Suite 'ZwiftShiftCoreTests.xctest' passed at 2026-11-09 15:11:42.529.
+	 Executed 28 tests, with 0 failures (0 unexpected) in 0.232 (0.235) seconds
+Test Suite 'All tests' passed at 2026-11-09 15:11:42.529.
+	 Executed 28 tests, with 0 failures (0 unexpected) in 0.232 (0.236) seconds
+◇ Test run started.
+↳ Testing Library Version: 2403
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

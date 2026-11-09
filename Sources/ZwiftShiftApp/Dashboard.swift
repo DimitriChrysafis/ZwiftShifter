@@ -44,6 +44,7 @@ struct Dashboard: View {
         .accessibilityIdentifier("connection-status")
         Spacer()
         Menu {
+          Button("Phone controls…") { model.panel = .phone }
           Button("Settings…") { model.panel = .settings }
           Button("Connection…") { model.panel = .connection }
           Button("Activity…") { model.panel = .activity }
@@ -57,15 +58,31 @@ struct Dashboard: View {
         .accessibilityLabel("More")
         .accessibilityIdentifier("more-menu")
       }
+      Button { model.panel = .phone } label: {
+        HStack(spacing: 7) {
+          Image(systemName: "qrcode")
+          Text(status.phone?.publicURL ?? status.phone?.localURLs.first ?? "Phone controls")
+            .lineLimit(1).truncationMode(.middle)
+          Spacer(minLength: 0)
+          Image(systemName: "chevron.right").font(.system(size: 9))
+        }
+        .font(.system(size: 11)).foregroundStyle(.secondary)
+        .contentShape(Rectangle())
+      }
+      .buttonStyle(.plain)
+      .accessibilityLabel("Phone controls")
+      .accessibilityIdentifier("phone-controls")
+      .help("Show the phone link and QR code")
     }
     .padding(20)
-    .frame(width: 380, height: 320)
+    .frame(width: 380, height: 350)
     .background(Color(nsColor: .windowBackgroundColor))
     .sheet(item: $model.panel) { panel in
       switch panel {
       case .settings: ControlsSettings(model: model, draft: status.settings)
       case .connection: ConnectionDetails(model: model)
       case .activity: ActivityView(model: model)
+      case .phone: PhoneControlsView(model: model)
       }
     }
   }

@@ -4,6 +4,9 @@ import ZwiftShiftCore
 
 @main struct ZwiftShiftCLI {
   @MainActor static func main() {
+    if CommandLine.arguments.dropFirst().first == "__ngrok" {
+      exit(NgrokWorker.run(Array(CommandLine.arguments.dropFirst(2))))
+    }
     do {
       let args = try CLIArguments(Array(CommandLine.arguments.dropFirst()))
       let request: RPCRequest
@@ -73,6 +76,10 @@ import ZwiftShiftCore
           )
         }
         print("Backend: \(status.backend)")
+        if let phone = status.phone {
+          print("Phone controls: \(phone.publicURL ?? phone.localURLs.first ?? phone.state)")
+          print("Open Phone controls in the app for the private link or QR code.")
+        }
         print(
           "Repeat: \(status.settings.repeatMilliseconds) ms · shortcuts \(status.settings.upShortcut.label) / \(status.settings.downShortcut.label)"
         )

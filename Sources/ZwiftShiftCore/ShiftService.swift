@@ -5,6 +5,7 @@ import Foundation
   public private(set) var status: ServiceStatus
   public var onUpdate: ((ServiceStatus) -> Void)?
   public let paths: RuntimePaths
+  public private(set) var phone: PhoneControl?
   private let backend: NetworkBackend
   private let rpc: RPCServer
   private let telemetry: GearTelemetry
@@ -61,11 +62,27 @@ import Foundation
     }
     RunLoop.main.add(timer, forMode: .common)
     self.timer = timer
+    do {
+      let phone = try PhoneControl(paths: paths, readStatus: { [weak self] in
+        self?.status ?? ServiceStatus(settings: Settings())
+      }, shift: { [weak self] direction, completion in
+        guard let self else { completion(RPCResponse(ok: false, message: "Service stopped.")); return }
+        self.shift(direction, completion: completion)
+      })
+      self.phone = phone
+      phone.onUpdate = { [weak self] value in
+        self?.status.phone = value
+        self?.publish()
+      }
+      try phone.start()
+    } catch { log("warning", "Phone controls could not start: \(error.localizedDescription)") }
     log("info", "ZwiftShift started. Gear feedback comes from Zwift’s log.")
   }
   public func stop() {
     guard !stopped else { return }
     stopped = true
+    phone?.stop()
+    phone = nil
     cancelShifting()
     timer?.invalidate()
     timer = nil

@@ -1,11 +1,11 @@
 # Interface
 
-The user requested a very minimal native utility. The main content is 380 × 320
+The user requested a very minimal native utility. The main content is 380 × 350
 points: one observed gear, two equally weighted shift buttons, shortcut hints,
-and one connection status. It uses system type and semantic colors and follows
+and one connection status, followed by a small phone URL row. It uses system type and semantic colors and follows
 the Mac's appearance. The icon is a plain pair of opposing arrows.
 
-Settings, connection details, and activity are available from the ellipsis menu.
+Settings, connection details, activity, and phone controls are available from the ellipsis menu.
 Command–comma opens settings. Settings can be saved or cancelled. The main window
 has no slogan, decorative gauge, gradient, repeated status cards, or permanent
 debug console.
@@ -28,6 +28,13 @@ assignments. The backend protocol and pulse scheduler are shared with the CLI.
 Shift buttons retain explicit press/release, cancellation on deactivation, and
 accessible single-press actions. Stable `shift-up` / `shift-down` accessibility
 identifiers let the live test locate them without screen-coordinate assumptions.
+
+The phone panel contains the private QR/link, an ngrok toggle, local address,
+retry when needed, and link reset. It keeps those details out of the main window.
+The web page follows the same minimal layout: system type, observed gear, two
+large touch buttons, and a short connection message. It includes light/dark
+appearance and safe-area spacing. Its browser capture has been reviewed on this
+Mac; physical iPhone/cellular use remains a separate acceptance check.
 
 ## Research used
 
