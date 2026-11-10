@@ -13,17 +13,22 @@ TXT keys:
 |---|---|
 | `mac-address` | Stable generated locally administered address |
 | `serial-number` | Stable generated decimal identity |
-| `ble-service-uuids` | `fc82,1818,180a,180f` |
+| `ble-service-uuids` | `fc82,180d,180a,180f` |
 
-Identity is saved in `build/runtime/settings.json`. Zwift caches discovery
-metadata; changing capabilities under an existing identity may not refresh its
-classification immediately. The app permits only same-host TCP peers. Bonjour
+Identity is saved in the runtime `settings.json` (`~/Library/Application
+Support/ZwiftShift/` by default). Zwift caches discovery metadata **keyed by
+device name**; changing capabilities under an existing identity may not refresh
+its classification. The app permits only same-host TCP peers. Bonjour
 advertising itself is visible on the LAN.
 
-FC82-only advertisements were discovered but not selectable as Controls. Service
-1818 enables initial Power Source selection and capability interrogation. This
-is a discovery bootstrap: **the app never sends Cycling Power measurements**.
-The actual trainer must supply power, cadence, and resistance during a ride.
+FC82-only advertisements were discovered but not selectable as Controls; a
+role-bearing service is required for picker listing. Heart Rate `180d` is the
+bootstrap service: selecting the device under Heart Rate makes Zwift open TCP,
+read the DevInfo page, and grant component 23, after which it lists under
+Controls. Cycling Power `1818` previously served as the bootstrap but let the
+device be selected as Power Source (0 watts); it was removed 2026-11-09.
+**The app never sends power or heart-rate measurements.** The actual trainer
+must supply power, cadence, and resistance during a ride.
 
 ## DirCon framing
 

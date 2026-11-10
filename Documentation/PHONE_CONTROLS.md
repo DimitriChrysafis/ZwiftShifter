@@ -50,7 +50,7 @@ crash. System sleep can interrupt access; no system sleep prevention is added.
 
 ## Access and stored data
 
-`build/runtime/phone.json` stores the port, Internet preference, and 256-bit
+The runtime `phone.json` stores the port, Internet preference, and 256-bit
 random key. It is mode 0600 inside the existing owner-only runtime directory.
 Preserve this file during builds. `ZWIFTSHIFT_HOME` changes the runtime location.
 

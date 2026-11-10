@@ -39,13 +39,14 @@ and reinstall. No background daemon or login item is installed.
 
 1. Start ZwiftShift, then open Zwift's **Paired Devices** screen. In a ride,
    pressing **A** opens pairing.
-2. Find **ZwiftShift Input** under **Controls**. A fresh clone uses **ZwiftShift**.
-3. If absent, temporarily select that name under **Power Source**. Wait a few
-   seconds for Zwift to read its capabilities, then select it under **Controls**.
-   You may need this discovery step again after restarting Zwift.
-4. Set **Power Source**, **Resistance**, and **Cadence** back to your actual KICKR
-   CORE. Leave **Controls** on ZwiftShift Input. The software controller supplies
-   no power measurements.
+2. Find **ZwiftShift** under **Controls**.
+3. If absent, temporarily select that name under **Heart Rate**. Wait a few
+   seconds for Zwift to read its capabilities, then select it under **Controls**
+   and return **Heart Rate** to your trainer. You may need this discovery step
+   again after restarting Zwift.
+4. Keep **Power Source**, **Resistance**, and **Cadence** on your actual KICKR
+   CORE. Leave **Controls** on ZwiftShift. The software controller supplies
+   no power measurements — never select it as Power Source.
 5. Enter a free ride with virtual shifting enabled in Zwift. Shift up and down
    and check Zwift's gear display.
 
@@ -208,12 +209,13 @@ a separate authenticated HTTP listener and the same shared shifting service.
 
 ## Settings, troubleshooting, and removal
 
-Runtime state lives in **`build/runtime/`**: `settings.json`, private `phone.json`,
-owner-only `control.sock`, `service.lock`, and bounded `events.jsonl` logs. Device identity is
-generated once and persisted. `ZWIFTSHIFT_HOME` overrides this directory for both
-app and CLI; use the same value for both.
+Runtime state lives in **`~/Library/Application Support/ZwiftShift/`**:
+`settings.json`, private `phone.json`, owner-only `control.sock`, `service.lock`,
+and bounded `events.jsonl` logs. Device identity is generated once and
+persisted. `ZWIFTSHIFT_HOME` overrides this directory for both app and CLI; use
+the same value for both.
 
-If discovery fails, repeat the Power Source bootstrap and restore the trainer
+If discovery fails, repeat the Heart Rate bootstrap and restore the trainer
 afterward. Keep an active network interface; discovery was verified before and
 after moving networks. For unconfirmed shifts, check the ride, gear limits,
 trainer settings, and Documents permission. `zwiftshift diagnostics` provides a

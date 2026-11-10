@@ -18,8 +18,9 @@ Use [README.md](README.md) for normal build/run instructions.
 - The user explicitly wants a **very minimal native UI**. Preserve the small
   window, plain system appearance, two equal shift buttons, and secondary panels.
   See [Documentation/UI.md](Documentation/UI.md).
-- Preserve personal controls and the stable controller identity. `build/runtime/`
-  contains persistent settings; do not delete it as a routine build cleanup.
+- Preserve personal controls and the stable controller identity.
+  `~/Library/Application Support/ZwiftShift/` contains persistent settings;
+  do not delete it as a routine build cleanup.
 - Phone HTTP and optional ngrok use the same `ShiftService`. Keep private keys,
   QR codes, ngrok credentials, and raw requests out of Git and diagnostics.
   Preserve the user's Internet-access toggle. The app launcher is on Desktop.

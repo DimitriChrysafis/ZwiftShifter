@@ -1,7 +1,8 @@
 # Local app / CLI interface
 
 The desktop application and `zwiftshift serve` expose the same current-user Unix
-socket at `build/runtime/control.sock`. The directory is mode 0700, socket 0600;
+socket at `~/Library/Application Support/ZwiftShift/control.sock` by default.
+The directory is mode 0700, socket 0600;
 the server checks the peer UID. `flock(service.lock)` prevents duplicate services.
 It refuses to replace a regular file masquerading as its socket.
 
@@ -66,7 +67,7 @@ usage errors use 1. A shift already in progress rejects another request.
 ```python
 import json, pathlib, socket
 
-path = pathlib.Path.home() / "Desktop/zwiftshit/build/runtime/control.sock"
+path = pathlib.Path.home() / "Library/Application Support/ZwiftShift/control.sock"
 with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
     client.settimeout(210)
     client.connect(str(path))

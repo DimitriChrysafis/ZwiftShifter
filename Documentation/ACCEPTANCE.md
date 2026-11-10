@@ -193,8 +193,8 @@ script stops on failure with no blind retry. Screenshots are private by default.
   historical/future version or every trainer.
 - Trainer load response, sustained riding, ERG behavior, and sleep/wake with the
   physical trainer remain future ride checks.
-- The app may require Power Source bootstrap discovery after a fresh Zwift start.
-  Restore the actual trainer for power/resistance/cadence afterward.
+- The app may require Heart Rate bootstrap discovery after a fresh Zwift start.
+  Keep the actual trainer for power/resistance/cadence throughout.
 - Feedback is from the local game log; simultaneous other inputs can make
   attribution ambiguous. The HUD proof is independent visual evidence.
 - macOS scheduling is not hard real time; configured repeat intervals are a

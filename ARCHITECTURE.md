@@ -56,8 +56,9 @@ are diagnostic **offsets from the Mach-O image base** for this exact build.
 **None are used by the product.**
 
 1. Bonjour discovery creates a WFTNP/LAN exercise device. FC82 alone was found
-   but not selectable; Cycling Power service 1818 enables initial classification.
-   The controller never sends fabricated power measurements.
+   but not selectable; Heart Rate service 180d enables initial classification
+   (a Cycling Power 1818 bootstrap was removed — it allowed Power Source
+   selection). The controller never sends fabricated power measurements.
 2. TCP service discovery exposes FC82 and characteristics `02` (events), `03`
    (writes from Zwift), and `04` (responses).
 3. `RideOn 02 04` → `RideOn 02 00` establishes the observed unencrypted LAN
