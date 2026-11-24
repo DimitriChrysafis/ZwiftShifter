@@ -1,4 +1,6 @@
 import argparse
+import io
+import struct
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -20,14 +22,31 @@ RECORD_FIELDS = {
 }
 
 
+def patch_data_size(path):
+    data = path.read_bytes()
+    if len(data) < 14 or data[8:12] != b".FIT":
+        return None
+    header_size = data[0]
+    declared = struct.unpack("<I", data[4:8])[0]
+    actual = len(data) - header_size - 2
+    if declared == actual:
+        return None
+    fixed = bytearray(data)
+    fixed[4:8] = struct.pack("<I", max(actual, 0))
+    return bytes(fixed)
+
+
 def pick(msg, fields):
     return {k: v for k, v in msg.items() if k in fields and v is not None}
 
 
 def parse(path):
-    messages, errors = (
-        Decoder(Stream.from_file(str(path))).read(enable_crc_check=False)
-    )
+    patched = patch_data_size(path)
+    if patched is not None:
+        stream = Stream.from_bytes_io(io.BytesIO(patched))
+    else:
+        stream = Stream.from_file(str(path))
+    messages, errors = Decoder(stream).read(enable_crc_check=False)
     sessions = messages.get("session_mesgs") or []
     session = pick(sessions[-1], SESSION_FIELDS) if sessions else {}
     laps = [pick(m, SESSION_FIELDS) for m in messages.get("lap_mesgs") or []]
