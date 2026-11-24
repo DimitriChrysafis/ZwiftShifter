@@ -1,0 +1,50 @@
+services:
+  mongo:
+    image: mongo:8.0
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: zwift
+      MONGO_INITDB_ROOT_PASSWORD: zwift
+    volumes:
+      - mongo:/data/db
+    healthcheck:
+      test: mongosh --quiet --eval "db.adminCommand('ping')" > /dev/null 2>&1
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: zwift
+      MYSQL_USER: zwift
+      MYSQL_PASSWORD: zwift
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+      test: mysqladmin ping -h localhost -u root -proot
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.18.1
+    ports:
+      - "9299:9200"
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+    volumes:
+      - es:/usr/share/elasticsearch/data
+    healthcheck:
+      test: curl -sf http://localhost:9200/_cluster/health > /dev/null
+      interval: 10s
+      timeout: 5s
+      retries: 10
+volumes:
+  mongo:
+  mysql:
+  es:

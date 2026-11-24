@@ -1,0 +1,14 @@
+pymongo
+mysql-connector-python
+elasticsearch>=8,<9
+garmin-fit-sdk
+sentence-transformers
+streamlit
+pandas
+numpy
+matplotlib
+statsmodels
+nbformat
+nbclient
+ipykernel
+requests
