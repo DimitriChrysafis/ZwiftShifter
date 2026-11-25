@@ -1,28 +1,14 @@
 import os
+import subprocess
 import sys
-from pathlib import Path
-
-import requests
-from sentence_transformers import SentenceTransformer
 
 from db import es
+from sentence_transformers import SentenceTransformer
 
 INDEX = "ride-chunks"
 EMBED_MODEL = "BAAI/bge-small-en-v1.5"
-CHAT_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
-KEYS_FILE = (Path.home() / "Desktop" / "keys" / "workingkeys"
-             / "openai_keys.txt")
-
-
-def api_keys():
-    if os.environ.get("OPENAI_API_KEY"):
-        return [os.environ["OPENAI_API_KEY"]]
-    if KEYS_FILE.exists():
-        keys = [l.strip() for l in KEYS_FILE.read_text().splitlines()
-                if l.strip().startswith("sk-")]
-        if keys:
-            return keys
-    raise SystemExit("no OPENAI_API_KEY and no key in ~/Desktop/keys/")
+DEVIN_BIN = os.environ.get("ZWIFTSHIFT_DEVIN_BIN", "devin")
+DEVIN_MODEL = os.environ.get("ZWIFTSHIFT_DEVIN_MODEL", "swe-2-medium")
 
 
 def retrieve(question, k=6):
@@ -47,25 +33,32 @@ def answer(question, hits):
     )
     prompt = (
         "You answer questions about the user's Zwift riding history using "
-        "the retrieved ride summaries below. Be concise and cite specific "
-        "ride dates or filenames.\n\n"
+        "the retrieved ride summaries below. Use only the retrieved context. "
+        "Do not inspect files, run commands, or modify anything. Be concise "
+        "and cite specific ride dates or filenames. Return only the answer.\n\n"
         f"Retrieved context:\n{ctx}\n\nQuestion: {question}"
     )
-    for key in api_keys():
-        r = requests.post(
-            "https://api.openai.com/v1/chat/completions",
-            headers={"Authorization": f"Bearer {key}"},
-            json={
-                "model": CHAT_MODEL,
-                "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": 300,
-            },
-            timeout=60,
+    try:
+        proc = subprocess.run(
+            [
+                DEVIN_BIN,
+                "--model", DEVIN_MODEL,
+                "--respect-workspace-trust", "false",
+                "-p", prompt,
+            ],
+            capture_output=True,
+            check=False,
+            text=True,
+            timeout=120,
         )
-        if r.status_code != 401:
-            r.raise_for_status()
-            return r.json()["choices"][0]["message"]["content"].strip()
-    raise SystemExit("all OpenAI keys returned 401")
+    except FileNotFoundError:
+        raise RuntimeError("devin CLI not found on PATH") from None
+    except subprocess.TimeoutExpired:
+        raise RuntimeError("devin CLI timed out") from None
+    if proc.returncode != 0:
+        detail = proc.stderr.strip() or proc.stdout.strip() or "unknown error"
+        raise RuntimeError(f"devin CLI failed: {detail}")
+    return proc.stdout.strip()
 
 
 def main():

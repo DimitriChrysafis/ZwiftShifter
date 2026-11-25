@@ -43,5 +43,5 @@ aborted-activity stubs and are skipped on ingest.
   power-duration curve, FTP estimate, CTL/ATL/TSB, weekly-distance forecast.
 - `norm_power` exists in the warehouse schema but is computed downstream in
   the notebook, not during ELT.
-- embeddings: `BAAI/bge-small-en-v1.5` (384-d, cosine). RAG answer step calls
-  OpenAI (`OPENAI_API_KEY`, or first working key in `~/Desktop/keys/`).
+- embeddings: `BAAI/bge-small-en-v1.5` (384-d, cosine). RAG answer step uses
+  the Devin CLI with `swe-2-medium`.
