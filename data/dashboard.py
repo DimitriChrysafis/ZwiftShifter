@@ -1,143 +1,199 @@
+import sys
+
+import altair as alt
 import pandas as pd
 import streamlit as st
 
-from db import mongo_db, mysql_conn
+sys.path.insert(0, '.')
+from db import mysql_conn
 
-st.set_page_config(page_title="zwiftshift data", layout="wide")
-
-
-@st.cache_data(ttl=300)
-def load_activities():
-    conn = mysql_conn()
-    df = pd.read_sql("select * from activities order by start_time", conn)
-    conn.close()
-    return df
+st.set_page_config(page_title='Zwift Ride Analytics', layout='wide')
+st.title('Zwift Ride Analytics')
+st.caption('Personal data layer: raw FIT files, logical ride sessions, time-series analysis, and grounded retrieval')
 
 
-@st.cache_data(ttl=300)
-def load_records(activity_id):
-    conn = mysql_conn()
-    df = pd.read_sql(
-        "select * from records where activity_id = %s order by ts",
-        conn, params=(activity_id,),
-    )
-    conn.close()
-    return df
-
-
-@st.cache_data(ttl=300)
-def record_count():
+def q(sql, params=None):
     conn = mysql_conn()
     cur = conn.cursor()
-    cur.execute("select count(*) from records")
-    n = cur.fetchone()[0]
+    cur.execute(sql, params or ())
+    cols = [d[0] for d in cur.description]
+    rows = cur.fetchall()
     conn.close()
-    return n
+    return pd.DataFrame(rows, columns=cols)
 
 
-def normalized_power(p):
-    if len(p) < 30:
-        return None
-    roll = p.rolling(30).mean().dropna()
-    return float((roll**4).mean() ** 0.25)
+@st.cache_data(ttl=120)
+def load_sessions():
+    df = q('select * from sessions order by start_time desc')
+    df['start_time'] = pd.to_datetime(df['start_time'])
+    df['end_time'] = pd.to_datetime(df['end_time'])
+    return df
 
 
-def fitness_frame(act):
-    rows = []
-    for _, a in act.dropna(subset=["start_time"]).iterrows():
-        recs = load_records(a["id"])
-        if recs.empty or a["elapsed_s"] is None:
-            continue
-        np_ = normalized_power(recs["power"].fillna(0))
-        ftp = FTP or 1
-        tss = (a["elapsed_s"] * (np_ or a["avg_power"] or 0) ** 2
-               / (ftp**2 * 3600)) * 100
-        rows.append({"date": a["start_time"].date(), "tss": tss,
-                     "distance_km": (a["distance_m"] or 0) / 1000})
-    d = pd.DataFrame(rows)
-    if d.empty:
-        return d
-    daily = d.groupby("date").sum()
-    daily.index = pd.to_datetime(daily.index)
-    daily = daily.reindex(
-        pd.date_range(daily.index.min(), daily.index.max()), fill_value=0
+@st.cache_data(ttl=120)
+def load_files():
+    df = q('select * from activities order by start_time desc')
+    df['start_time'] = pd.to_datetime(df['start_time'])
+    return df
+
+
+@st.cache_data(ttl=120)
+def records_for_session(session_id):
+    return q(
+        'select r.ts, r.power, r.cadence, r.speed_mps, r.distance_m, a.filename '
+        'from records r join activities a on a.id = r.activity_id '
+        'where a.session_id = %s order by r.ts',
+        (session_id,),
     )
-    daily["CTL"] = daily["tss"].ewm(span=42, min_periods=1).mean()
-    daily["ATL"] = daily["tss"].ewm(span=7, min_periods=1).mean()
-    daily["TSB"] = daily["CTL"] - daily["ATL"]
-    return daily
 
 
-FTP = 226
+def fmt_hm(seconds):
+    seconds = int(seconds or 0)
+    h, rem = divmod(seconds, 3600)
+    m = rem // 60
+    return f'{h}:{m:02d} h' if h else f'{m} min'
 
-act = load_activities()
-n_records = record_count()
-total_km = (act["distance_m"].fillna(0).sum()) / 1000
-total_h = act["elapsed_s"].fillna(0).sum() / 3600
 
-st.title("zwiftshift data layer")
-c1, c2, c3, c4 = st.columns(4)
-c1.metric("rides", len(act))
-c2.metric("distance", f"{total_km:,.0f} km")
-c3.metric("time", f"{total_h:.1f} h")
-c4.metric("records", f"{n_records:,}")
+def session_label(row):
+    files = f', {row.n_files} files' if row.n_files > 1 else ''
+    return (f'{row.start_time:%Y-%m-%d %H:%M}  ·  '
+            f'{row.distance_m / 1000:.1f} km  ·  '
+            f'{fmt_hm(row.moving_s)}{files}')
 
-overview, rides, fitness, ask = st.tabs(
-    ["overview", "rides", "fitness", "ask"]
-)
 
-with overview:
-    st.subheader("weekly distance")
-    if not act.empty:
-        wk = act.dropna(subset=["start_time"]).set_index("start_time")[
-            "distance_m"
-        ].resample("W").sum() / 1000
-        st.bar_chart(wk)
-        st.subheader("recent rides")
-        cols = ["filename", "sport", "start_time", "distance_m",
-                "elapsed_s", "avg_power", "max_power", "n_records"]
+sessions = load_sessions()
+files = load_files()
+
+tabs = st.tabs(['Overview', 'Rides', 'Fitness', 'Ask'])
+
+with tabs[0]:
+    st.subheader('Archive')
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric('Logical sessions', len(sessions))
+    c2.metric('Activity files', len(files))
+    c3.metric('Distance', f'{sessions.distance_m.sum() / 1000:,.1f} km')
+    c4.metric('Sessionized elapsed', f'{sessions.moving_s.sum() / 3600:.1f} h')
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric('Records', f'{int(sessions.n_records.sum()):,}')
+    c2.metric('Recovered records', f'{int(sessions.recovered_records.sum()):,}')
+    c3.metric('Stitched sessions', int((sessions.n_files > 1).sum()))
+    c4.metric('Tiny fragments', int(sessions.quality_flags.fillna('').str.contains('tiny_fragment').sum()))
+
+    st.subheader('Weekly distance')
+    weekly = (sessions.set_index('start_time')['distance_m']
+              .resample('W').sum().reset_index())
+    weekly['km'] = weekly['distance_m'] / 1000
+    chart = alt.Chart(weekly).mark_line(point=True, color='#42d97c').encode(
+        x=alt.X('start_time:T', title='Week'),
+        y=alt.Y('km:Q', title='Distance (km)'),
+    ).properties(height=280)
+    st.altair_chart(chart, use_container_width=True)
+
+    st.subheader('Recent logical sessions')
+    show = sessions.head(20).copy()
+    show['Distance (km)'] = show.distance_m / 1000
+    show['Elapsed'] = show.moving_s.map(fmt_hm)
+    show['Avg power (W)'] = show.avg_power
+    show['Max power (W)'] = show.max_power
+    show['Files'] = show.n_files
+    show['Records'] = show.n_records
+    show['Quality'] = show.quality_flags.fillna('')
+    st.dataframe(
+        show[['start_time', 'Distance (km)', 'Elapsed', 'Avg power (W)',
+              'Max power (W)', 'Files', 'Records', 'Quality']]
+        .rename(columns={'start_time': 'Start'}),
+        use_container_width=True,
+        hide_index=True,
+    )
+
+    with st.expander('File-level provenance'):
+        st.caption('Raw FIT file rows are preserved here. They are not counted as standalone training rides.')
+        fshow = files.head(40).copy()
+        fshow['Distance (km)'] = fshow.distance_m / 1000
+        fshow['Duration'] = fshow.elapsed_s.map(fmt_hm)
         st.dataframe(
-            act[cols].sort_values("start_time", ascending=False).head(20)
+            fshow[['filename', 'start_time', 'Distance (km)', 'Duration', 'avg_power', 'n_records', 'session_id']]
+            .rename(columns={
+                'filename': 'FIT file', 'start_time': 'Start',
+                'avg_power': 'Avg power (W)', 'n_records': 'Records',
+                'session_id': 'Session',
+            }),
+            use_container_width=True,
+            hide_index=True,
         )
 
-with rides:
-    names = act["filename"].tolist()
-    pick = st.selectbox("ride", names,
-                        index=len(names) - 1 if names else 0)
-    if pick:
-        row = act[act["filename"] == pick].iloc[0]
-        recs = load_records(row["id"])
-        st.write(
-            f"{row['start_time']} — {(row['distance_m'] or 0)/1000:.1f} km, "
-            f"avg {row['avg_power']} W, max {row['max_power']} W, "
-            f"{row['n_records']} records"
-        )
-        if not recs.empty:
-            chart = recs.set_index("t_offset_s")[["power", "heart_rate"]]
-            st.line_chart(chart)
-
-with fitness:
-    st.subheader("CTL / ATL / TSB")
-    daily = fitness_frame(act)
-    if daily.empty:
-        st.write("no ride data")
+with tabs[1]:
+    st.subheader('Ride detail')
+    meaningful = sessions.copy()
+    meaningful['label'] = meaningful.apply(session_label, axis=1)
+    label = st.selectbox('Logical session', meaningful['label'])
+    row = meaningful.loc[meaningful['label'] == label].iloc[0]
+    rec = records_for_session(row.id)
+    if not rec.empty:
+        rec['ts'] = pd.to_datetime(rec['ts'])
+        rec['elapsed_min'] = (rec.ts - pd.to_datetime(row.start_time)).dt.total_seconds() / 60
+        c1, c2, c3, c4, c5 = st.columns(5)
+        c1.metric('Distance', f'{row.distance_m / 1000:.1f} km')
+        c2.metric('Sessionized elapsed', fmt_hm(row.moving_s))
+        c3.metric('Avg power', f'{row.avg_power} W')
+        c4.metric('Sprint max', f'{row.max_power} W')
+        c5.metric('Records', f'{int(row.n_records):,}')
+        chart = alt.Chart(rec).mark_line(color='#d7ff3f').encode(
+            x=alt.X('elapsed_min:Q', title='Elapsed time (minutes)'),
+            y=alt.Y('power:Q', title='Power (W)'),
+            tooltip=['elapsed_min:Q', 'power:Q', 'filename:N'],
+        ).properties(height=420)
+        st.altair_chart(chart, use_container_width=True)
+        if row.n_files > 1:
+            st.info(f'This logical session was stitched from {row.n_files} FIT files. Source files are preserved in the provenance table.')
+            st.text(row.source_filenames)
     else:
-        st.line_chart(daily[["CTL", "ATL", "TSB"]])
-        st.caption(
-            f"latest: CTL {daily['CTL'].iloc[-1]:.0f}, "
-            f"ATL {daily['ATL'].iloc[-1]:.0f}, "
-            f"TSB {daily['TSB'].iloc[-1]:.0f} (FTP {FTP} W)"
-        )
+        st.warning('No timestamped records found for this session')
 
-with ask:
-    st.subheader("ask the ride archive")
-    q = st.text_input("question", "hardest ride in november")
-    if st.button("ask") and q:
-        try:
-            from rag.ask import retrieve, answer
-            hits = retrieve(q)
-            st.write(answer(q, hits))
-            st.caption("sources: " + ", ".join(
-                h["_source"]["ride"] for h in hits))
-        except Exception as e:
-            st.error(f"rag unavailable: {e}")
+with tabs[2]:
+    st.subheader('Power-duration curve')
+    allrec = q('select activity_id, power from records where power is not null order by activity_id, ts')
+    windows = [1, 5, 15, 30, 60, 120, 300, 600, 1200]
+    best = {}
+    for w in windows:
+        val = 0
+        for _, grp in allrec.groupby('activity_id', sort=False):
+            p = grp.power.dropna()
+            if len(p) >= w:
+                val = max(val, p.rolling(w).mean().max())
+        best[w] = val
+    curve = pd.DataFrame({'duration_s': list(best), 'power_w': list(best.values())})
+    chart = alt.Chart(curve).mark_line(point=True, color='#d7ff3f').encode(
+        x=alt.X('duration_s:Q', scale=alt.Scale(type='log'), title='Record-count window (approx. seconds, log scale)'),
+        y=alt.Y('power_w:Q', title='Best mean power (W)'),
+    ).properties(height=430)
+    st.altair_chart(chart, use_container_width=True)
+    ftp = best[1200] * .95 if 1200 in best else 0
+    c1, c2 = st.columns(2)
+    c1.metric('Best 20 minutes', f'{best.get(1200, 0):.0f} W')
+    c2.metric('FTP estimate', f'{ftp:.0f} W')
+
+with tabs[3]:
+    st.subheader('Ask the archive')
+    st.caption('SQL supplies exact evidence. Vector retrieval supplies semantic context.')
+    question = st.text_input('Question', 'which november 2026 ride had the highest whole-ride average power, counting rides over 20 minutes')
+    if st.button('Answer'):
+        with st.spinner('Retrieving evidence and generating answer'):
+            import contextlib
+            import io
+
+            from rag.ask import answer, retrieve, sql_candidates
+            hits = retrieve(question)
+            table = sql_candidates(question)
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                text = answer(question, hits, table)
+            st.markdown(text)
+            with st.expander('Evidence'):
+                st.caption(f'Warehouse rows: {len(table)}')
+                for line in table:
+                    st.text(line)
+                st.caption('Vector matches')
+                for hit in hits:
+                    src = hit['_source']
+                    st.text(f"{hit['_score']:.3f}  {src['ride']}  ({src['kind']})")

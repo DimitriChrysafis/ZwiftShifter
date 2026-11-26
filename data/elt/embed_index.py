@@ -2,6 +2,7 @@ from elasticsearch.helpers import bulk
 from sentence_transformers import SentenceTransformer
 
 from db import es, mongo_db
+from elt.select import included_activities
 
 INDEX = "ride-chunks"
 MODEL = "BAAI/bge-small-en-v1.5"
@@ -33,13 +34,15 @@ def naive(ts):
     return ts.replace(tzinfo=None) if ts and ts.tzinfo else ts
 
 
+def hr_phrase(value):
+    return f"avg hr {value} bpm, " if value else ""
+
+
 def chunks(db):
     out = []
-    for d in db.activities.find():
+    for d in included_activities(db):
         s = d.get("session") or {}
         recs = d.get("records") or []
-        if not recs:
-            continue
         ts = [r["timestamp"] for r in recs if r.get("timestamp")]
         start = s.get("start_time") or (min(ts) if ts else None)
         sport = s.get("sport") or "ride"
@@ -68,7 +71,7 @@ def chunks(db):
             "start_time": naive(start).isoformat() if start else None,
             "text": (f"{sport} on {st}: {km} km, {hrs} h, "
                      f"avg power {avg_p} W, max {max_p} W, "
-                     f"avg hr {s.get('avg_heart_rate')} bpm, "
+                     f"{hr_phrase(s.get('avg_heart_rate'))}"
                      f"cadence {s.get('avg_cadence')} rpm, "
                      f"ascent {s.get('total_ascent')} m"),
         })
@@ -83,8 +86,9 @@ def chunks(db):
                 "start_time": naive(lstart).isoformat() if lstart else None,
                 "text": (f"lap {i+1} of {d['filename']}: {ldist/1000:.1f} km, "
                          f"{round(lel/60)} min, "
-                         f"avg power {lap.get('avg_power')} W, "
-                         f"avg hr {lap.get('avg_heart_rate')} bpm"),
+                         f"avg power {lap.get('avg_power')} W"
+                         + (f", avg hr {lap.get('avg_heart_rate')} bpm"
+                            if lap.get('avg_heart_rate') else "")),
             })
     return out
 
@@ -92,8 +96,9 @@ def chunks(db):
 def run():
     db = mongo_db()
     client = es()
-    if not client.indices.exists(index=INDEX):
-        client.indices.create(index=INDEX, body=MAPPING)
+    if client.indices.exists(index=INDEX):
+        client.indices.delete(index=INDEX)
+    client.indices.create(index=INDEX, body=MAPPING)
     docs = chunks(db)
     print(f"embedding {len(docs)} chunks with {MODEL}")
     model = SentenceTransformer(MODEL)
