@@ -1,1 +1,3 @@
-#filler
+# AI use
+
+this project was built with heavy use of ai coding agents. the agents did a lot of the reverse engineering grind on zwift's lan protocol, including decoding protobuf fields, testing packet formats, and writing the boilerplate and glue code, plus much of the lazy implementation work across the repo. my role was directing the work: deciding what to build, choosing what to try next when something failed, reviewing what the agents produced, and judging what counted as verified. the database side of the analytics project, the mongodb to mysql to elasticsearch pipeline in data/, is the part i designed and built mostly myself.
