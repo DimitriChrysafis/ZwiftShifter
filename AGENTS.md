@@ -26,8 +26,8 @@ Use [README.md](README.md) for normal build/run instructions.
   Preserve the user's Internet-access toggle. The app launcher is on Desktop.
 - Back up Zwift configuration before changing it. Preserve the installed game,
   account state, and macOS security settings. Keep experiments isolated.
-- Keep this repository **private**. Raw logs, configuration backups, binary
-  extracts, reference checkouts, and credentials stay in ignored local storage.
+- This repository can remain **public**. Raw logs, configuration backups,
+  binary extracts, reference checkouts, and credentials stay in ignored local storage.
 - Never print full Zwift process arguments: its launcher can put authentication
   tokens on the command line. Use PID/executable-name-only process inspection.
 - Run checks appropriate to the change. Live tests change gears; use them when
